@@ -1,0 +1,15 @@
+setup:
+- command: [docker, run, --privileged=true, --name, some-rabbitmq, -d, '$IMAGE']
+- command: [sleep, 5s]
+
+teardown:
+- command: [docker, stop, some-rabbitmq]
+- command: [docker, rm, some-rabbitmq]
+
+target: some-rabbitmq
+tests:
+- name: Health check
+  command: [rabbitmqctl, node_health_check]
+  expect:
+    stdout:
+      matches: Health check passed
