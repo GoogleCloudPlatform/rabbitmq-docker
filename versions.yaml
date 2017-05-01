@@ -26,7 +26,7 @@ _variables:
     gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
 
 versions:
-  - dir: '3.6'
+  - dir: '3/3.6'
     repo: rabbitmq3
     tags:
       - 3.6
@@ -38,4 +38,3 @@ versions:
       rabbitmq:
         version: '3.6.9-1'
         gpg: '0A9AF2115F4687BD29803A206B73A36E6026DFCA'
-
