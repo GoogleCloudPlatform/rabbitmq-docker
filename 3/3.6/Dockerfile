@@ -13,7 +13,7 @@ RUN set -x \
 	&& tar -xvf gosu.tar.gz -C /usr/local/src \
 	&& rm gosu.tar.gz \
 	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+	&& gpg --keyserver pgp.mit.edu --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
 	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
@@ -27,7 +27,7 @@ RUN set -x \
 RUN set -ex; \
 	key='434975BD900CCBE4F7EE1B1ED208507CA14F4FCA'; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+	gpg --keyserver pgp.mit.edu --recv-keys "$key"; \
 	gpg --export "$key" > /etc/apt/trusted.gpg.d/erlang-solutions.gpg; \
 	rm -r "$GNUPGHOME"; \
 	apt-key list
@@ -59,7 +59,7 @@ ENV GPG_KEYS 0A9AF2115F4687BD29803A206B73A36E6026DFCA
 RUN set -ex; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	for key in $GPG_KEYS; do \
-		gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+		gpg --keyserver pgp.mit.edu --recv-keys "$key"; \
 	done; \
 	gpg --export $GPG_KEYS > /etc/apt/trusted.gpg.d/rabbitmq.gpg; \
 	rm -r "$GNUPGHOME"; \
