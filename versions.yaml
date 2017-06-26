@@ -30,7 +30,7 @@ versions:
     repo: rabbitmq3
     tags:
       - 3.6
-      - 3.6.9
+      - 3.6.10
       - latest
     from: *from
     packages:
