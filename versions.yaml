@@ -29,8 +29,8 @@ versions:
   - dir: '3/3.6'
     repo: rabbitmq3
     tags:
-      - 3.6
-      - 3.6.10
+      - '3.6'
+      - '3.6.10'
       - latest
     from: *from
     packages:
