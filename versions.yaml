@@ -29,12 +29,12 @@ versions:
   - dir: '3/3.6'
     repo: rabbitmq3
     tags:
-      - '3.6.11'
+      - '3.6.12'
       - '3.6'
       - latest
     from: *from
     packages:
       gosu: *gosu
       rabbitmq:
-        version: '3.6.11-1'
+        version: '3.6.12-1'
         gpg: '0A9AF2115F4687BD29803A206B73A36E6026DFCA'
