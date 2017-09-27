@@ -21,6 +21,7 @@
 
 _variables:
   from: &from gcr.io/google-appengine/debian8:latest
+  gpg: &gpg 0A9AF2115F4687BD29803A206B73A36E6026DFCA
   gosu: &gosu
     version: '1.10'
     gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -31,10 +32,11 @@ versions:
     tags:
       - '3.6.12'
       - '3.6'
-      - latest
+      - 'latest'
     from: *from
     packages:
       gosu: *gosu
       rabbitmq:
-        version: '3.6.12-1'
-        gpg: '0A9AF2115F4687BD29803A206B73A36E6026DFCA'
+        version: 3.6.12-1
+        major: '3.6'
+        gpg: *gpg
