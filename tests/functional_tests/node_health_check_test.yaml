@@ -20,14 +20,14 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 setup:
-- command: [docker, run, --privileged=true, --name, some-rabbitmq, -d, '$IMAGE']
+- command: [docker, run, --privileged=true, --name, some-rabbitmq-$UNIQUE-id, -d, '$IMAGE']
 - command: [sleep, 5s]
 
 teardown:
-- command: [docker, stop, some-rabbitmq]
-- command: [docker, rm, some-rabbitmq]
+- command: [docker, stop, some-rabbitmq-$UNIQUE-id]
+- command: [docker, rm, some-rabbitmq-$UNIQUE-id]
 
-target: some-rabbitmq
+target: some-rabbitmq-$UNIQUE-id
 tests:
 - name: Health check
   command: [rabbitmqctl, node_health_check]
