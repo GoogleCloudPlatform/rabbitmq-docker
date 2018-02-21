@@ -8,6 +8,17 @@ RUN groupadd -r rabbitmq && useradd -r -d /var/lib/rabbitmq -m -g rabbitmq rabbi
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION {{ $gosu.Version }}
+
+RUN set -ex; \
+        if ! command -v gpg > /dev/null; then \
+                apt-get update; \
+                apt-get install -y --no-install-recommends \
+                        gnupg \
+			dirmngr \
+                ; \
+                rm -rf /var/lib/apt/lists/*; \
+        fi
+
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
 	&& wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
@@ -16,7 +27,21 @@ RUN set -x \
 	&& wget -q -O /usr/local/src/gosu.tar.gz "https://github.com/tianon/gosu/archive/$GOSU_VERSION.tar.gz" \
 # extract gosu binary and check signature
 	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver pgp.mit.edu --recv-keys {{ $gosu.Gpg }} \
+	&& found='' \
+	&& for server in \
+		pool.sks-keyservers.net \
+		ha.pool.sks-keyservers.net \
+		pgp.mit.edu \
+		na.pool.sks-keyservers.net \
+		eu.pool.sks-keyservers.net \
+		oc.pool.sks-keyservers.net \
+		ha.pool.sks-keyservers.net \
+		hkp://p80.pool.sks-keyservers.net:80 \
+		hkp://keyserver.ubuntu.com:80 \
+	; do \
+		gpg --keyserver $server --recv-keys {{ $gosu.Gpg }} \
+			&& found="yes" && break; \
+	done; test -n "$found" \
 	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
@@ -34,7 +59,7 @@ RUN set -ex; \
 	gpg --export "$key" > /etc/apt/trusted.gpg.d/erlang-solutions.gpg; \
 	rm -r "$GNUPGHOME"; \
 	apt-key list
-RUN echo 'deb http://packages.erlang-solutions.com/debian jessie contrib' > /etc/apt/sources.list.d/erlang.list
+RUN echo 'deb http://packages.erlang-solutions.com/debian stretch contrib' > /etc/apt/sources.list.d/erlang.list
 
 # install Erlang
 RUN apt-get update \
