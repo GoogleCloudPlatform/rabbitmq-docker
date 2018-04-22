@@ -5,12 +5,19 @@ RUN groupadd -r rabbitmq && useradd -r -d /var/lib/rabbitmq -m -g rabbitmq rabbi
 
 {{- $gosu := index .Packages "gosu" }}
 {{- $rabbitmq := index .Packages "rabbitmq" }}
-{{- $repo := index .TemplateArgs "repo" }}
 {{- $os := index .TemplateArgs "os" }}
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION {{ $gosu.Version }}
 ENV GOSU_GPG {{ $gosu.Gpg }}
+
+RUN set -x \
+        && apt-get update \
+        && apt-get install -y \
+                dirmngr \
+                gnupg \
+                wget \
+        && rm -rf /var/lib/apt/lists/*
 
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
