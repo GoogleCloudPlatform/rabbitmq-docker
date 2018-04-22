@@ -61,7 +61,7 @@ RUN set -ex; \
 	gpg --export "$key" > /etc/apt/trusted.gpg.d/erlang-solutions.gpg; \
 	rm -r "$GNUPGHOME"; \
 	apt-key list
-RUN echo 'deb http://packages.erlang-solutions.com/debian stretch contrib' > /etc/apt/sources.list.d/erlang.list
+RUN echo 'deb http://packages.erlang-solutions.com/debian jessie contrib' > /etc/apt/sources.list.d/erlang.list
 
 # install Erlang
 RUN apt-get update \

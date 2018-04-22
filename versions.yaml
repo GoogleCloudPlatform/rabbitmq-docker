@@ -30,6 +30,8 @@ _variables:
 versions:
   - dir: '3/debian8/3.6'
     repo: rabbitmq3
+    templateArgs:
+      os: 'jessie'
     tags:
       - '3.6.15-debian8'
       - '3.6-debian8'
@@ -44,6 +46,8 @@ versions:
         gpg: *gpg
   - dir: '3/debian9/3.6'
     repo: rabbitmq3
+    templateArgs:
+      os: 'stretch'
     tags:
       - '3.6.15-debian9'
       - '3.6-debian9'
