@@ -30,6 +30,7 @@ _variables:
 versions:
   - dir: '3/debian8/3.6'
     repo: rabbitmq3
+    templateSubDir: debian8
     templateArgs:
       os: 'jessie'
     tags:
@@ -44,18 +45,19 @@ versions:
         version: 3.6.15-1
         major: '3.6'
         gpg: *gpg
-  - dir: '3/debian9/3.6'
+  - dir: '3/debian9/3.7'
     repo: rabbitmq3
+    templateSubDir: debian9
     templateArgs:
       os: 'stretch'
     tags:
-      - '3.6.15-debian9'
-      - '3.6-debian9'
+      - '3.7.4-debian9'
+      - '3.7-debian9'
       - 'latest'
     from: *from9
     packages:
       gosu: *gosu
       rabbitmq:
-        version: 3.6.15-1
-        major: '3.6'
+        version: 3.7.4-1
+        major: '3.7'
         gpg: *gpg
