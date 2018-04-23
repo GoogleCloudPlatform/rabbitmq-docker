@@ -42,7 +42,7 @@ versions:
     packages:
       gosu: *gosu
       rabbitmq:
-        version: 3.6.15
+        version: 3.6.15-1
         major: '3.6'
         gpg: *gpg
   - dir: '3/debian9/3.7'
@@ -58,6 +58,6 @@ versions:
     packages:
       gosu: *gosu
       rabbitmq:
-        version: 3.7.4
+        version: 3.7.4-1
         major: '3.7'
         gpg: *gpg
