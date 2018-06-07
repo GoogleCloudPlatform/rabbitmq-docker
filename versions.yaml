@@ -20,7 +20,8 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 _variables:
-  from: &from gcr.io/google-appengine/debian8:latest
+  from8: &from8 gcr.io/google-appengine/debian8:latest
+  from9: &from9 gcr.io/google-appengine/debian9:latest
   gpg: &gpg 0A9AF2115F4687BD29803A206B73A36E6026DFCA
   gosu: &gosu
     version: '1.10'
@@ -31,13 +32,32 @@ versions:
     repo: rabbitmq3
     templateSubDir: debian8
     tags:
+      - '3.6.15-debian8'
+      - '3.6-debian8'
       - '3.6.15'
       - '3.6'
-      - 'latest'
-    from: *from
+    from: *from8
     packages:
       gosu: *gosu
       rabbitmq:
         version: 3.6.15-1
         major: '3.6'
+        gpg: *gpg
+  - dir: '3/debian9/3.7'
+    repo: rabbitmq3
+    templateSubDir: debian9
+    templateArgs:
+      Minor: '3.7.5'
+    tags:
+      - '3.7.5-debian9'
+      - '3.7-debian9'
+      - '3.7.5'
+      - '3.7'
+      - 'latest'
+    from: *from9
+    packages:
+      gosu: *gosu
+      rabbitmq:
+        version: 3.7.5-1
+        major: '3.7'
         gpg: *gpg
