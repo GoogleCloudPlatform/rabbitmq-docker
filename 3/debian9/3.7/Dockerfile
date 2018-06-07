@@ -111,7 +111,7 @@ ENV PATH /usr/lib/rabbitmq/bin:$PATH
 
 # gpg: key 6026DFCA: public key "RabbitMQ Release Signing Key <info@rabbitmq.com>" imported
 ENV RABBITMQ_GPG_KEY 0A9AF2115F4687BD29803A206B73A36E6026DFCA
-# TODO(wgrzelak): Add minor key to Packages and migrate from templateArgs.
+
 ENV RABBITMQ_VERSION 3.7.5
 ENV RABBITMQ_GITHUB_TAG v3.7.5
 ENV RABBITMQ_DEBIAN_VERSION 3.7.5-1
