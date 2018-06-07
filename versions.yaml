@@ -27,8 +27,9 @@ _variables:
     gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
 
 versions:
-  - dir: '3/3.6'
+  - dir: '3/debian8/3.6'
     repo: rabbitmq3
+    templateSubDir: debian8
     tags:
       - '3.6.15'
       - '3.6'
