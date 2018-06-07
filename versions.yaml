@@ -45,7 +45,6 @@ versions:
     repo: rabbitmq3
     templateSubDir: debian9
     templateArgs:
-      Minor: '3.6.15'
       GithubTag: rabbitmq_v3_6_15
     tags:
       - '3.6.15-debian9'
@@ -57,13 +56,13 @@ versions:
       gosu: *gosu
       rabbitmq:
         version: 3.6.15-1
+        minor: '3.6.15'
         major: '3.6'
         gpg: *gpg
   - dir: '3/debian9/3.7'
     repo: rabbitmq3
     templateSubDir: debian9
     templateArgs:
-      Minor: '3.7.5'
       GithubTag: v3.7.5
     tags:
       - '3.7.5-debian9'
@@ -76,5 +75,6 @@ versions:
       gosu: *gosu
       rabbitmq:
         version: 3.7.5-1
+        minor: '3.7.5'
         major: '3.7'
         gpg: *gpg
