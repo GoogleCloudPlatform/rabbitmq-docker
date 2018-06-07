@@ -1,6 +1,4 @@
-{{- $is37Version := eq .Dir "3/debian9/3.7" -}}
-
-FROM {{ .From }}
+FROM gcr.io/google-appengine/debian9:latest
 
 RUN set -eux; \
 	apt-get update; \
@@ -13,13 +11,9 @@ RUN set -eux; \
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r rabbitmq && useradd -r -d /var/lib/rabbitmq -m -g rabbitmq rabbitmq
 
-{{- $gosu := index .Packages "gosu" }}
-{{- $rabbitmq := index .Packages "rabbitmq" }}
-{{- $template := index .TemplateArgs }}
-
 # grab gosu for easy step-down from root
-ENV GOSU_VERSION {{ $gosu.Version }}
-ENV GOSU_GPG {{ $gosu.Gpg }}
+ENV GOSU_VERSION 1.10
+ENV GOSU_GPG B42F6819007F00F88E364FD4036A9C25BF357DD4
 RUN set -eux; \
 	\
 	fetchDeps=' \
@@ -39,7 +33,21 @@ RUN set -eux; \
 	\
 # verify the signature
 	export GNUPGHOME="$(mktemp -d)"; \
-	{{ `gpg --keyserver $server --recv-keys $GOSU_GPG` | KeyServersRetryLoop "\t" }}; \
+	found='' && \
+	for server in \
+		pool.sks-keyservers.net \
+		na.pool.sks-keyservers.net \
+		eu.pool.sks-keyservers.net \
+		oc.pool.sks-keyservers.net \
+		ha.pool.sks-keyservers.net \
+		hkp://p80.pool.sks-keyservers.net:80 \
+		hkp://keyserver.ubuntu.com:80 \
+		pgp.mit.edu \
+	; do \
+		gpg --keyserver $server --recv-keys $GOSU_GPG \
+			&& found=yes && break; \
+	done; \
+	test -n "$found"; \
 	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	\
@@ -48,29 +56,6 @@ RUN set -eux; \
 	gosu nobody true; \
 	\
 	apt-get purge -y --auto-remove $fetchDeps
-
-{{- if $is37Version }}
-# RabbitMQ 3.6.15+ requires Erlang 19.3+ (and Stretch only has 19.2); https://www.rabbitmq.com/which-erlang.html
-# so we'll pull Erlang from Buster instead (not using Erlang Solutions since their multiarch support is extremely limited)
-RUN set -eux; \
-# add buster sources.list
-	sed 's/stretch/buster/g' /etc/apt/sources.list \
-		| tee /etc/apt/sources.list.d/buster.list; \
-# update apt-preferences such that we get only erlang* from buster (and erlang* only from buster)
-	{ \
-		echo 'Package: *'; \
-		echo 'Pin: release n=buster*'; \
-		echo 'Pin-Priority: 1'; \
-		echo; \
-		echo 'Package: erlang*'; \
-		echo 'Pin: release n=buster*'; \
-		echo 'Pin-Priority: 999'; \
-		echo; \
-		echo 'Package: erlang*'; \
-		echo 'Pin: release n=stretch*'; \
-		echo 'Pin-Priority: -10'; \
-	} | tee /etc/apt/preferences.d/buster-erlang
-{{- end }}
 
 # install Erlang
 RUN set -eux; \
@@ -107,9 +92,9 @@ ENV PATH /usr/lib/rabbitmq/bin:$PATH
 # gpg: key 6026DFCA: public key "RabbitMQ Release Signing Key <info@rabbitmq.com>" imported
 ENV RABBITMQ_GPG_KEY 0A9AF2115F4687BD29803A206B73A36E6026DFCA
 # TODO(wgrzelak): Add minor key to Packages and migrate from templateArgs.
-ENV RABBITMQ_VERSION {{ $template.Minor }}
-ENV RABBITMQ_GITHUB_TAG {{ $template.GithubTag }}
-ENV RABBITMQ_DEBIAN_VERSION {{ $rabbitmq.Version }}
+ENV RABBITMQ_VERSION 3.6.15
+ENV RABBITMQ_GITHUB_TAG rabbitmq_v3_6_15
+ENV RABBITMQ_DEBIAN_VERSION 3.6.15-1
 
 RUN set -eux; \
 	\
@@ -122,7 +107,21 @@ RUN set -eux; \
 	apt-get purge -y --auto-remove ca-certificates wget; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
-	{{ `gpg --keyserver $server --recv-keys $RABBITMQ_GPG_KEY` | KeyServersRetryLoop "\t" }}; \
+	found='' && \
+	for server in \
+		pool.sks-keyservers.net \
+		na.pool.sks-keyservers.net \
+		eu.pool.sks-keyservers.net \
+		oc.pool.sks-keyservers.net \
+		ha.pool.sks-keyservers.net \
+		hkp://p80.pool.sks-keyservers.net:80 \
+		hkp://keyserver.ubuntu.com:80 \
+		pgp.mit.edu \
+	; do \
+		gpg --keyserver $server --recv-keys $RABBITMQ_GPG_KEY \
+			&& found=yes && break; \
+	done; \
+	test -n "$found"; \
 	gpg --batch --verify rabbitmq-server.deb.asc rabbitmq-server.deb; \
 	rm -rf "$GNUPGHOME"; \
 	\
@@ -131,11 +130,6 @@ RUN set -eux; \
 	rm -f rabbitmq-server.deb*; \
 	\
 	rm -rf /var/lib/apt/lists/*
-
-{{- if $is37Version }}
-# warning: the VM is running with native name encoding of latin1 which may cause Elixir to malfunction as it expects utf8. Please ensure your locale is set to UTF-8 (which can be verified by running "locale" in your shell)
-ENV LANG C.UTF-8
-{{- end }}
 
 # set home so that any `--user` knows where to put the erlang cookie
 ENV HOME /var/lib/rabbitmq

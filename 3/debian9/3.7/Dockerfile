@@ -56,7 +56,6 @@ RUN set -eux; \
 	gosu nobody true; \
 	\
 	apt-get purge -y --auto-remove $fetchDeps
-
 # RabbitMQ 3.6.15+ requires Erlang 19.3+ (and Stretch only has 19.2); https://www.rabbitmq.com/which-erlang.html
 # so we'll pull Erlang from Buster instead (not using Erlang Solutions since their multiarch support is extremely limited)
 RUN set -eux; \
@@ -151,7 +150,6 @@ RUN set -eux; \
 	rm -f rabbitmq-server.deb*; \
 	\
 	rm -rf /var/lib/apt/lists/*
-
 # warning: the VM is running with native name encoding of latin1 which may cause Elixir to malfunction as it expects utf8. Please ensure your locale is set to UTF-8 (which can be verified by running "locale" in your shell)
 ENV LANG C.UTF-8
 
