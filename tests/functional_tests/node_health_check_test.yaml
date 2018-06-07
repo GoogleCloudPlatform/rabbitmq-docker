@@ -21,7 +21,7 @@
 
 setup:
 - command: [docker, run, --privileged=true, --name, some-rabbitmq-$UNIQUE-id, -d, '$IMAGE']
-- command: [sleep, 5s]
+- command: [sleep, 20s]
 
 teardown:
 - command: [docker, stop, some-rabbitmq-$UNIQUE-id]
