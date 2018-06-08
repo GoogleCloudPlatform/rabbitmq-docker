@@ -105,7 +105,7 @@ ENV RABBITMQ_LOGS=- RABBITMQ_SASL_LOGS=-
 ENV PATH /usr/lib/rabbitmq/bin:$PATH
 
 # gpg: key 6026DFCA: public key "RabbitMQ Release Signing Key <info@rabbitmq.com>" imported
-ENV RABBITMQ_GPG_KEY 0A9AF2115F4687BD29803A206B73A36E6026DFCA
+ENV RABBITMQ_GPG_KEY {{ $rabbitmq.Gpg }}
 
 ENV RABBITMQ_VERSION {{ $rabbitmq.Minor }}
 ENV RABBITMQ_GITHUB_TAG {{ $template.GithubTag }}
