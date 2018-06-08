@@ -5,6 +5,7 @@ RUN groupadd -r rabbitmq && useradd -r -d /var/lib/rabbitmq -m -g rabbitmq rabbi
 
 {{- $gosu := index .Packages "gosu" }}
 {{- $rabbitmq := index .Packages "rabbitmq" }}
+{{- $template := index .TemplateArgs }}
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION {{ $gosu.Version }}
@@ -71,7 +72,7 @@ RUN set -ex; \
 	apt-key list
 RUN echo 'deb http://www.rabbitmq.com/debian testing main' > /etc/apt/sources.list.d/rabbitmq.list
 
-ENV RABBITMQ_VERSION {{ $rabbitmq.Version }}
+ENV RABBITMQ_VERSION {{ $template.DebianVersion }}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		rabbitmq-server=$RABBITMQ_VERSION \
