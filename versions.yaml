@@ -28,20 +28,6 @@ _variables:
     gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
 
 versions:
-  - dir: '3/debian8/3.6'
-    repo: rabbitmq3
-    templateSubDir: debian8
-    templateArgs:
-      DebianVersion: 3.6.15-1
-    tags:
-      - '3.6.15-debian8'
-      - '3.6-debian8'
-    from: *from8
-    packages:
-      gosu: *gosu
-      rabbitmq:
-        version: '3.6.15'
-        gpg: *gpg
   - dir: '3/debian9/3.6'
     repo: rabbitmq3
     templateSubDir: debian9
