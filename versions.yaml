@@ -20,7 +20,6 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 _variables:
-  from8: &from8 gcr.io/google-appengine/debian8:latest
   from9: &from9 gcr.io/google-appengine/debian9:latest
   gpg: &gpg 0A9AF2115F4687BD29803A206B73A36E6026DFCA
   gosu: &gosu
