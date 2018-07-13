@@ -62,3 +62,6 @@ versions:
       rabbitmq:
         version: '3.7.5'
         gpg: *gpg
+
+cloudbuild:
+  enable_parallel: true
