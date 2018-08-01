@@ -31,36 +31,36 @@ versions:
     repo: rabbitmq3
     templateSubDir: debian9
     templateArgs:
-      GithubTag: rabbitmq_v3_6_15
-      DebianVersion: 3.6.15-1
+      GithubTag: rabbitmq_v3_6_16
+      DebianVersion: 3.6.16-1
     tags:
-      - '3.6.15-debian9'
+      - '3.6.16-debian9'
       - '3.6-debian9'
-      - '3.6.15'
+      - '3.6.16'
       - '3.6'
     from: *from9
     packages:
       gosu: *gosu
       rabbitmq:
-        version: '3.6.15'
+        version: '3.6.16'
         gpg: *gpg
   - dir: '3/debian9/3.7'
     repo: rabbitmq3
     templateSubDir: debian9
     templateArgs:
-      GithubTag: v3.7.5
-      DebianVersion: 3.7.5-1
+      GithubTag: v3.7.7
+      DebianVersion: 3.7.7-1
     tags:
-      - '3.7.5-debian9'
+      - '3.7.7-debian9'
       - '3.7-debian9'
-      - '3.7.5'
+      - '3.7.7'
       - '3.7'
       - 'latest'
     from: *from9
     packages:
       gosu: *gosu
       rabbitmq:
-        version: '3.7.5'
+        version: '3.7.7'
         gpg: *gpg
 
 cloudbuild:
