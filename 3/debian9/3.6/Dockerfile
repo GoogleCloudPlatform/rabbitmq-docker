@@ -44,11 +44,11 @@ RUN set -eux; \
 		hkp://keyserver.ubuntu.com:80 \
 		pgp.mit.edu \
 	; do \
-		gpg --batch --keyserver $server --recv-keys $GOSU_GPG \
+		gpg --no-tty --keyserver $server --recv-keys $GOSU_GPG \
 			&& found=yes && break; \
 	done; \
 	test -n "$found"; \
-	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
+	gpg --no-tty --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	\
 	chmod +x /usr/local/bin/gosu; \
@@ -118,11 +118,11 @@ RUN set -eux; \
 		hkp://keyserver.ubuntu.com:80 \
 		pgp.mit.edu \
 	; do \
-		gpg --batch --keyserver $server --recv-keys $RABBITMQ_GPG_KEY \
+		gpg --no-tty --keyserver $server --recv-keys $RABBITMQ_GPG_KEY \
 			&& found=yes && break; \
 	done; \
 	test -n "$found"; \
-	gpg --batch --verify rabbitmq-server.deb.asc rabbitmq-server.deb; \
+	gpg --no-tty --verify rabbitmq-server.deb.asc rabbitmq-server.deb; \
 	rm -rf "$GNUPGHOME"; \
 	\
 	apt install -y --no-install-recommends ./rabbitmq-server.deb; \
