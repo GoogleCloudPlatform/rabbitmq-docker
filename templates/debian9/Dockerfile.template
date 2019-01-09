@@ -39,8 +39,8 @@ RUN set -eux; \
 	\
 # verify the signature
 	export GNUPGHOME="$(mktemp -d)"; \
-	{{ `gpg --keyserver $server --recv-keys $GOSU_GPG` | KeyServersRetryLoop "\t" }}; \
-	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
+	{{ `gpg --no-tty --keyserver $server --recv-keys $GOSU_GPG` | KeyServersRetryLoop "\t" }}; \
+	gpg --no-tty --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	\
 	chmod +x /usr/local/bin/gosu; \
@@ -70,6 +70,11 @@ RUN set -eux; \
 		echo 'Pin: release n=stretch*'; \
 		echo 'Pin-Priority: -10'; \
 	} | tee /etc/apt/preferences.d/buster-erlang
+{{- end }}
+
+{{- if not $is36Version }}
+RUN echo 'deb http://http.us.debian.org/debian testing main' >> /etc/apt/sources.list && \
+	apt-get update && apt-get install -t testing -y openssl
 {{- end }}
 
 # install Erlang
@@ -122,8 +127,8 @@ RUN set -eux; \
 	apt-get purge -y --auto-remove ca-certificates wget; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
-	{{ `gpg --keyserver $server --recv-keys $RABBITMQ_GPG_KEY` | KeyServersRetryLoop "\t" }}; \
-	gpg --batch --verify rabbitmq-server.deb.asc rabbitmq-server.deb; \
+	{{ `gpg --no-tty --keyserver $server --recv-keys $RABBITMQ_GPG_KEY` | KeyServersRetryLoop "\t" }}; \
+	gpg --no-tty --batch --verify rabbitmq-server.deb.asc rabbitmq-server.deb; \
 	rm -rf "$GNUPGHOME"; \
 	\
 	apt install -y --no-install-recommends ./rabbitmq-server.deb; \
