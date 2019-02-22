@@ -27,40 +27,23 @@ _variables:
     gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
 
 versions:
-  - dir: '3/debian9/3.6'
-    repo: rabbitmq3
-    templateSubDir: debian9
-    templateArgs:
-      GithubTag: rabbitmq_v3_6_16
-      DebianVersion: 3.6.16-1
-    tags:
-      - '3.6.16-debian9'
-      - '3.6-debian9'
-      - '3.6.16'
-      - '3.6'
-    from: *from9
-    packages:
-      gosu: *gosu
-      rabbitmq:
-        version: '3.6.16'
-        gpg: *gpg
   - dir: '3/debian9/3.7'
     repo: rabbitmq3
     templateSubDir: debian9
     templateArgs:
-      GithubTag: v3.7.8
-      DebianVersion: 3.7.8-1
+      GithubTag: v3.7.9
+      DebianVersion: 3.7.9-1
     tags:
-      - '3.7.8-debian9'
+      - '3.7.9-debian9'
       - '3.7-debian9'
-      - '3.7.8'
+      - '3.7.9'
       - '3.7'
       - 'latest'
     from: *from9
     packages:
       gosu: *gosu
       rabbitmq:
-        version: '3.7.8'
+        version: '3.7.9'
         gpg: *gpg
 
 cloudbuild:
