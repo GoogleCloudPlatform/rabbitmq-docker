@@ -126,8 +126,6 @@ RUN set -eux; \
 	wget -O rabbitmq-server.deb.asc "https://github.com/rabbitmq/rabbitmq-server/releases/download/$RABBITMQ_GITHUB_TAG/rabbitmq-server_${RABBITMQ_DEBIAN_VERSION}_all.deb.asc"; \
 	wget -O rabbitmq-server.deb     "https://github.com/rabbitmq/rabbitmq-server/releases/download/$RABBITMQ_GITHUB_TAG/rabbitmq-server_${RABBITMQ_DEBIAN_VERSION}_all.deb"; \
 	\
-	apt-get purge -y --auto-remove ca-certificates wget; \
-	\
 	export GNUPGHOME="$(mktemp -d)"; \
 	found='' && \
 	for server in \
@@ -167,6 +165,18 @@ VOLUME /var/lib/rabbitmq
 RUN ln -sf /var/lib/rabbitmq/.erlang.cookie /root/
 
 RUN ln -sf "/usr/lib/rabbitmq/lib/rabbitmq_server-$RABBITMQ_VERSION/plugins" /plugins
+
+# Download RabbitMQ metrics plugins:
+RUN \
+  mkdir -p /usr/lib/rabbitmq/plugins; \
+  cd /usr/lib/rabbitmq/plugins; \
+  readonly base_url='https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.2.5'; \
+  wget "${base_url}/accept-0.3.5.ez"; \
+  wget "${base_url}/prometheus-4.2.2.ez"; \
+  wget "${base_url}/prometheus_cowboy-0.1.7.ez"; \
+  wget "${base_url}/prometheus_httpd-2.1.10.ez"; \
+  wget "${base_url}/prometheus_rabbitmq_exporter-3.7.2.5.ez"; \
+  apt-get purge -y --auto-remove ca-certificates wget;
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
