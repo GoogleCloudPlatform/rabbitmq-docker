@@ -176,6 +176,19 @@ RUN \
   wget "${base_url}/prometheus_cowboy-0.1.7.ez"; \
   wget "${base_url}/prometheus_httpd-2.1.10.ez"; \
   wget "${base_url}/prometheus_rabbitmq_exporter-3.7.2.5.ez"; \
+
+  readonly git_base='https://raw.githubusercontent.com/deadtrickster'; \
+  readonly license_base='/usr/share/doc/rabbitmq-plugins'; \
+
+  mkdir -p "${license_base}"; \
+  cd "${license_base}"; \
+
+  mkdir accept && wget -O accept/LICENSE "${git_base}/accept/master/LICENSE"; \
+  mkdir prometheus && wget -O prometheus/LICENSE "${git_base}/prometheus.erl/master/LICENSE"; \
+  mkdir prometheus_cowboy && wget -O prometheus_cowboy/LICENSE "${git_base}/prometheus-cowboy/master/LICENSE"; \
+  mkdir prometheus_httpd && wget -O prometheus_httpd/LICENSE "${git_base}/prometheus-httpd/master/LICENSE"; \
+  mkdir prometheus_rabbitmq_exporter && wget -O prometheus_rabbitmq_exporter/LICENSE "${git_base}/prometheus_rabbitmq_exporter/master/LICENSE"; \
+
   apt-get purge -y --auto-remove ca-certificates wget;
 
 COPY docker-entrypoint.sh /usr/local/bin/
