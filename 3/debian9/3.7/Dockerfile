@@ -1,3 +1,30 @@
+FROM gcr.io/google-appengine/debian9:latest AS plugins
+
+COPY license-checksums /
+
+RUN set -eux; \
+  apt-get update && apt-get install -y ca-certificates wget; \
+  \
+  mkdir /plugins && cd /plugins; \
+  \
+  readonly base_url='https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.2.5'; \
+  wget "${base_url}/accept-0.3.5.ez"; \
+  wget "${base_url}/prometheus-4.2.2.ez"; \
+  wget "${base_url}/prometheus_cowboy-0.1.7.ez"; \
+  wget "${base_url}/prometheus_httpd-2.1.10.ez"; \
+  wget "${base_url}/prometheus_rabbitmq_exporter-3.7.2.5.ez"; \
+  \
+  mkdir -p "/licenses" && cd "/licenses"; \
+  readonly git_base='https://raw.githubusercontent.com/deadtrickster'; \
+  \
+  mkdir accept && wget -O accept/LICENSE "${git_base}/accept/master/LICENSE"; \
+  mkdir prometheus && wget -O prometheus/LICENSE "${git_base}/prometheus.erl/master/LICENSE"; \
+  mkdir prometheus_cowboy && wget -O prometheus_cowboy/LICENSE "${git_base}/prometheus-cowboy/master/LICENSE"; \
+  mkdir prometheus_httpd && wget -O prometheus_httpd/LICENSE "${git_base}/prometheus-httpd/master/LICENSE"; \
+  mkdir prometheus_rabbitmq_exporter && wget -O prometheus_rabbitmq_exporter/LICENSE "${git_base}/prometheus_rabbitmq_exporter/master/LICENSE"; \
+  \
+  sha256sum -c /license-checksums
+
 FROM gcr.io/google-appengine/debian9:latest
 
 RUN set -eux; \
@@ -126,6 +153,8 @@ RUN set -eux; \
 	wget -O rabbitmq-server.deb.asc "https://github.com/rabbitmq/rabbitmq-server/releases/download/$RABBITMQ_GITHUB_TAG/rabbitmq-server_${RABBITMQ_DEBIAN_VERSION}_all.deb.asc"; \
 	wget -O rabbitmq-server.deb     "https://github.com/rabbitmq/rabbitmq-server/releases/download/$RABBITMQ_GITHUB_TAG/rabbitmq-server_${RABBITMQ_DEBIAN_VERSION}_all.deb"; \
 	\
+	apt-get purge -y --auto-remove ca-certificates wget; \
+	\
 	export GNUPGHOME="$(mktemp -d)"; \
 	found='' && \
 	for server in \
@@ -169,27 +198,10 @@ RUN ln -sf "/usr/lib/rabbitmq/lib/rabbitmq_server-$RABBITMQ_VERSION/plugins" /pl
 # Download RabbitMQ metrics plugins:
 RUN \
   mkdir -p /usr/lib/rabbitmq/plugins; \
-  cd /usr/lib/rabbitmq/plugins; \
-  readonly base_url='https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.2.5'; \
-  wget "${base_url}/accept-0.3.5.ez"; \
-  wget "${base_url}/prometheus-4.2.2.ez"; \
-  wget "${base_url}/prometheus_cowboy-0.1.7.ez"; \
-  wget "${base_url}/prometheus_httpd-2.1.10.ez"; \
-  wget "${base_url}/prometheus_rabbitmq_exporter-3.7.2.5.ez"; \
+  mkdir /usr/share/doc/rabbitmq-plugins;
 
-  readonly git_base='https://raw.githubusercontent.com/deadtrickster'; \
-  readonly license_base='/usr/share/doc/rabbitmq-plugins'; \
-
-  mkdir -p "${license_base}"; \
-  cd "${license_base}"; \
-
-  mkdir accept && wget -O accept/LICENSE "${git_base}/accept/master/LICENSE"; \
-  mkdir prometheus && wget -O prometheus/LICENSE "${git_base}/prometheus.erl/master/LICENSE"; \
-  mkdir prometheus_cowboy && wget -O prometheus_cowboy/LICENSE "${git_base}/prometheus-cowboy/master/LICENSE"; \
-  mkdir prometheus_httpd && wget -O prometheus_httpd/LICENSE "${git_base}/prometheus-httpd/master/LICENSE"; \
-  mkdir prometheus_rabbitmq_exporter && wget -O prometheus_rabbitmq_exporter/LICENSE "${git_base}/prometheus_rabbitmq_exporter/master/LICENSE"; \
-
-  apt-get purge -y --auto-remove ca-certificates wget;
+COPY --from=plugins /plugins/* /usr/lib/rabbitmq/plugins/
+COPY --from=plugins /licenses/* /usr/share/doc/rabbitmq-plugins/
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
