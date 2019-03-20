@@ -34,16 +34,16 @@ versions:
       GithubTag: v3.7.9
       DebianVersion: 3.7.9-1
     tags:
-      - '3.7.9-debian9'
+      - '3.7.13-debian9'
       - '3.7-debian9'
-      - '3.7.9'
+      - '3.7.13'
       - '3.7'
       - 'latest'
     from: *from9
     packages:
       gosu: *gosu
       rabbitmq:
-        version: '3.7.9'
+        version: '3.7.13'
         gpg: *gpg
 
 cloudbuild:
