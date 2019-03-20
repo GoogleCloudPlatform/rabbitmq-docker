@@ -32,6 +32,11 @@ teardown:
 target: some-rabbitmq-$UNIQUE-id
 tests:
 - name: Health check
+  command: [rabbitmqctl, node_health_check]
+  expect:
+    stdout:
+      matches: Health check passed
+- name: Prometheus metrics check
   command: [curl, 'http://localhost:15672/api/metrics']
   expect:
     stdout:
