@@ -400,4 +400,11 @@ if [ "$haveSslConfig" ] && [ -f "$combinedSsl" ]; then
 	export RABBITMQ_CTL_ERL_ARGS="${RABBITMQ_CTL_ERL_ARGS:-} $sslErlArgs"
 fi
 
+: ${RABBITMQ_ENABLED_PLUGINS=''}
+
+if [[ ! -z "${RABBITMQ_ENABLED_PLUGINS}" ]]; then
+  echo "${RABBITMQ_ENABLED_PLUGINS}" > /etc/rabbitmq/enabled_plugins
+  more /etc/rabbitmq/enabled_plugins
+fi
+
 exec "$@"
