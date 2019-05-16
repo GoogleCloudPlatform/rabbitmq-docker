@@ -35,7 +35,7 @@ tests:
     stdout:
       matches: Health check passed
 - name: Prometheus metrics check
-  command: [curl, 'http://localhost:15672/api/metrics']
+  command: [/usr/bin/curl, 'http://localhost:15672/api/metrics']
   expect:
     stdout:
       matches: TYPE rabbitmq_consumers gauge
