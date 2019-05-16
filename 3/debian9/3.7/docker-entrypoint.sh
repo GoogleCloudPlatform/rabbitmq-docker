@@ -21,7 +21,12 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-set -eu
+if [[ ! -z "${DEBUG_DOCKER_ENTERYPOINT}" ]]; then
+  set -x
+else
+  set -eu
+fi
+
 
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'

@@ -3,7 +3,7 @@ FROM gcr.io/google-appengine/debian9:latest AS plugins
 COPY license-checksums /
 
 RUN set -eux; \
-  apt-get update && apt-get install -y ca-certificates wget; \
+  apt-get update && apt-get install -y ca-certificates wget curl; \
   \
   mkdir /plugins && cd /plugins; \
   \

@@ -21,9 +21,7 @@
 
 setup:
 - command: [docker, run, --privileged=true, -e, 'RABBITMQ_ENABLED_PLUGINS=[rabbitmq_management,prometheus_rabbitmq_exporter].', --name, some-rabbitmq-$UNIQUE-id, -d, '$IMAGE']
-- command: [sleep, 20s]
-- command: [docker, exec, some-rabbitmq-$UNIQUE-id, apt, update]
-- command: [docker, exec, some-rabbitmq-$UNIQUE-id, apt, install, curl, -y]
+- command: [sleep, 30s]
 
 teardown:
 - command: [docker, stop, some-rabbitmq-$UNIQUE-id]
