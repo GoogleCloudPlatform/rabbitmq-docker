@@ -143,6 +143,8 @@ ENV RABBITMQ_VERSION {{ $rabbitmq.Version }}
 ENV RABBITMQ_GITHUB_TAG {{ $template.GithubTag }}
 ENV RABBITMQ_DEBIAN_VERSION {{ $template.DebianVersion }}
 
+ENV C2D_RELEASE=${RABBITMQ_VERSION}
+
 RUN set -eux; \
 	\
 	apt-get update; \
