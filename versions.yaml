@@ -31,8 +31,8 @@ versions:
     repo: rabbitmq3
     templateSubDir: debian9
     templateArgs:
-      GithubTag: v3.7.9
-      DebianVersion: 3.7.9-1
+      GithubTag: v3.7.13
+      DebianVersion: 3.7.13-1
     tags:
       - '3.7.13-debian9'
       - '3.7-debian9'
