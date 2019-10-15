@@ -206,7 +206,8 @@ COPY --from=plugins /plugins/* /usr/lib/rabbitmq/plugins/
 COPY --from=plugins /licenses/* /usr/share/doc/rabbitmq-plugins/
 
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
+RUN ln -s usr/local/bin/docker-entrypoint.sh /
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 4369 5671 5672 25672
