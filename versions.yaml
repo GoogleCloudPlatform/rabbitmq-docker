@@ -31,19 +31,19 @@ versions:
     repo: rabbitmq3
     templateSubDir: debian9
     templateArgs:
-      GithubTag: v3.7.19
-      DebianVersion: 3.7.19-1
+      GithubTag: v3.7.20
+      DebianVersion: 3.7.20-1
     tags:
-      - '3.7.19-debian9'
+      - '3.7.20-debian9'
       - '3.7-debian9'
-      - '3.7.19'
+      - '3.7.20'
       - '3.7'
       - 'latest'
     from: *from9
     packages:
       gosu: *gosu
       rabbitmq:
-        version: '3.7.19'
+        version: '3.7.20'
         gpg: *gpg
 
 cloudbuild:
