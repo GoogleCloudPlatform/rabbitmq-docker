@@ -12,6 +12,7 @@ RUN set -eux; \
   wget "${base_url}/prometheus-4.2.2.ez"; \
   wget "${base_url}/prometheus_cowboy-0.1.7.ez"; \
   wget "${base_url}/prometheus_httpd-2.1.10.ez"; \
+  wget "${base_url}/prometheus_process_collector-1.4.3.ez"; \
   wget "${base_url}/prometheus_rabbitmq_exporter-3.7.2.5.ez"; \
   \
   mkdir -p "/licenses" && cd "/licenses"; \
