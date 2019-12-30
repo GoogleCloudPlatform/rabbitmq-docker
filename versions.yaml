@@ -1,50 +1,60 @@
-# Copyright (c) 2017 Google Inc.
+# Copyright 2019 Google LLC
 #
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Software.
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-_variables:
-  from9: &from9 gcr.io/google-appengine/debian9:latest
-  gpg: &gpg 0A9AF2115F4687BD29803A206B73A36E6026DFCA
-  gosu: &gosu
-    version: '1.10'
-    gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-
-versions:
-  - dir: '3/debian9/3.7'
-    repo: rabbitmq3
-    templateSubDir: debian9
-    templateArgs:
-      GithubTag: v3.7.22
-      DebianVersion: 3.7.22-1
-    tags:
-      - '3.7.22-debian9'
-      - '3.7-debian9'
-      - '3.7.22'
-      - '3.7'
-      - 'latest'
-    from: *from9
-    packages:
-      gosu: *gosu
-      rabbitmq:
-        version: '3.7.22'
-        gpg: *gpg
 
 cloudbuild:
-  enable_parallel: true
+  enable_parallel: false
+versions:
+- dir: 3/debian9/3.7
+  from: gcr.io/google-appengine/debian9
+  packages:
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.10'
+    rabbitmq:
+      gpg: 0A9AF2115F4687BD29803A206B73A36E6026DFCA
+      version: 3.7.23
+  repo: jenkins3
+  tags:
+  - 3.7.23-debian9
+  - 3.7-debian9
+  - 3.7.23
+  - '3.7'
+  templateArgs:
+    DebianVersion: 3.7.23-1
+    GithubTag: v3.7.23
+  templateSubDir: debian9
+- dir: 3/debian9/3.8
+  from: gcr.io/google-appengine/debian9
+  packages:
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.10'
+    rabbitmq:
+      gpg: 0A9AF2115F4687BD29803A206B73A36E6026DFCA
+      version: 3.8.2
+  repo: jenkins3
+  tags:
+  - 3.8.2-debian9
+  - 3.8-debian9
+  - 3-debian9
+  - 3.8.2
+  - '3.8'
+  - '3'
+  - latest
+  templateArgs:
+    DebianVersion: 3.8.2-1
+    GithubTag: v3.8.2
+  templateSubDir: debian9
+
