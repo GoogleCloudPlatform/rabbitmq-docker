@@ -21,28 +21,6 @@
 cloudbuild:
   enable_parallel: true
 versions:
-- dir: 3/debian9/3.8
-  from: gcr.io/google-appengine/debian9
-  packages:
-    gosu:
-      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.10'
-    rabbitmq:
-      gpg: 0A9AF2115F4687BD29803A206B73A36E6026DFCA
-      version: 3.8.2
-  repo: rabbitmq3
-  tags:
-  - 3.8.2-debian9
-  - 3.8-debian9
-  - 3-debian9
-  - 3.8.2
-  - '3.8'
-  - '3'
-  - latest
-  templateArgs:
-    DebianVersion: 3.8.2-1
-    GithubTag: v3.8.2
-  templateSubDir: debian9
 - dir: 3/debian9/3.7
   from: gcr.io/google-appengine/debian9
   packages:
