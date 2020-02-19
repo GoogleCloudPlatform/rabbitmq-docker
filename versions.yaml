@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -29,18 +29,18 @@ versions:
       version: '1.10'
     rabbitmq:
       gpg: 0A9AF2115F4687BD29803A206B73A36E6026DFCA
-      version: 3.7.23
+      version: 3.7.24
   repo: rabbitmq3
   tags:
-  - 3.7.23-debian9
+  - 3.7.24-debian9
   - 3.7-debian9
   - 3-debian9
-  - 3.7.23
+  - 3.7.24
   - '3.7'
   - '3'
   - latest
   templateArgs:
-    DebianVersion: 3.7.23-1
-    GithubTag: v3.7.23
+    DebianVersion: 3.7.24-1
+    GithubTag: v3.7.24
   templateSubDir: debian9
 
