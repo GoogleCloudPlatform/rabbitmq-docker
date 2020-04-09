@@ -29,18 +29,18 @@ versions:
       version: '1.10'
     rabbitmq:
       gpg: 0A9AF2115F4687BD29803A206B73A36E6026DFCA
-      version: 3.7.24
+      version: 3.7.25
   repo: rabbitmq3
   tags:
-  - 3.7.24-debian9
+  - 3.7.25-debian9
   - 3.7-debian9
   - 3-debian9
-  - 3.7.24
+  - 3.7.25
   - '3.7'
   - '3'
   - latest
   templateArgs:
-    DebianVersion: 3.7.24-1
-    GithubTag: v3.7.24
+    DebianVersion: 3.7.25-1
+    GithubTag: v3.7.25
   templateSubDir: debian9
 
