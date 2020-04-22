@@ -7,7 +7,6 @@ RUN set -eux; \
   \
   mkdir /plugins && cd /plugins; \
   \
-  # TODO(armandomiani): this versioning should be automated on rotationlib
   readonly base_url='https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1'; \
   wget "${base_url}/accept-0.3.5.ez"; \
   wget "${base_url}/prometheus-4.3.0.ez"; \
@@ -77,7 +76,7 @@ RUN set -eux; \
         dirmngr \
 		dpkg-dev \
 		gcc \
-		gnupg \
+		gnupg2 \
 		libncurses5-dev \
         m4 \
 		make \
@@ -246,7 +245,7 @@ RUN set -eux; \
 	apt-get install --yes --no-install-recommends \
 		ca-certificates \
 		dirmngr \
-		gnupg \
+		gnupg2 \
 		wget \
 		xz-utils \
 	; \
