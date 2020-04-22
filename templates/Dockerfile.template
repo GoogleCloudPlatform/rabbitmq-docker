@@ -53,7 +53,6 @@ ARG PGP_KEYSERVER=ha.pool.sks-keyservers.net
 ENV OPENSSL_VERSION {{ $openssl.Version }}f
 ENV OPENSSL_SOURCE_SHA256="{{ $openssl.Sha256 }}"
 # https://www.openssl.org/community/omc.html
-ENV OPENSSL_PGP_KEY_IDS="{{ $openssl.Gpg }}"
 
 # Use the latest stable Erlang/OTP release (https://github.com/erlang/otp/tags)
 ENV OTP_VERSION {{ $otp.Version }}
@@ -93,16 +92,7 @@ RUN set -eux; \
 	OPENSSL_CONFIG_DIR=/usr/local/etc/ssl; \
 	\
 # Required by the crypto & ssl Erlang/OTP applications
-	wget --progress dot:giga --output-document "$OPENSSL_PATH.tar.gz.asc" "$OPENSSL_SOURCE_URL.asc"; \
 	wget --progress dot:giga --output-document "$OPENSSL_PATH.tar.gz" "$OPENSSL_SOURCE_URL"; \
-	export GNUPGHOME="$(mktemp -d)"; \
-	unset LD_LIBRARY_PATH; \
-	for key in $OPENSSL_PGP_KEY_IDS; do \
-		gpg --batch --keyserver "$PGP_KEYSERVER" --recv-keys "$key"; \
-	done; \
-	gpg --batch --verify "$OPENSSL_PATH.tar.gz.asc" "$OPENSSL_PATH.tar.gz"; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME"; \
 	echo "$OPENSSL_SOURCE_SHA256 *$OPENSSL_PATH.tar.gz" | sha256sum --check --strict -; \
 	mkdir -p "$OPENSSL_PATH"; \
 	tar --extract --file "$OPENSSL_PATH.tar.gz" --directory "$OPENSSL_PATH" --strip-components 1; \
@@ -234,7 +224,7 @@ RUN set -eux; \
 # Use the latest stable RabbitMQ release (https://www.rabbitmq.com/download.html)
 ENV RABBITMQ_VERSION {{ $rabbitmq.Version }}
 # https://www.rabbitmq.com/signatures.html#importing-gpg
-ENV RABBITMQ_PGP_KEY_ID="{{ $rabbitmq.Gpg }}"
+ENV RABBITMQ_SHA512="{{ $rabbitmq.Sha512 }}"
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
 # Add RabbitMQ to PATH, send all logs to TTY
@@ -258,17 +248,10 @@ RUN set -eux; \
 	RABBITMQ_SOURCE_URL="https://github.com/rabbitmq/rabbitmq-server/releases/download/v$RABBITMQ_VERSION/rabbitmq-server-generic-unix-latest-toolchain-$RABBITMQ_VERSION.tar.xz"; \
 	RABBITMQ_PATH="/usr/local/src/rabbitmq-$RABBITMQ_VERSION"; \
 	\
-	wget --progress dot:giga --output-document "$RABBITMQ_PATH.tar.xz.asc" "$RABBITMQ_SOURCE_URL.asc"; \
 	wget --progress dot:giga --output-document "$RABBITMQ_PATH.tar.xz" "$RABBITMQ_SOURCE_URL"; \
 	\
-	export GNUPGHOME="$(mktemp -d)"; \
-	unset LD_LIBRARY_PATH; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys "$RABBITMQ_PGP_KEY_ID"; \
-	gpg --batch --verify "$RABBITMQ_PATH.tar.xz.asc" "$RABBITMQ_PATH.tar.xz"; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME"; \
-	\
 	mkdir -p "$RABBITMQ_HOME"; \
+	echo "$RABBITMQ_SHA512 *$RABBITMQ_PATH.tar.xz" | sha512sum --check --strict -; \
 	tar --extract --file "$RABBITMQ_PATH.tar.xz" --directory "$RABBITMQ_HOME" --strip-components 1; \
 	rm -rf "$RABBITMQ_PATH"*; \
 # Do not default SYS_PREFIX to RABBITMQ_HOME, leave it empty
