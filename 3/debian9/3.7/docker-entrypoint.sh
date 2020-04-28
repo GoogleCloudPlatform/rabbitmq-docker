@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2018 Google Inc.
+# Copyright (c) 2020 Google Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -23,6 +23,8 @@
 
 set -eu
 
+export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu
+
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
 # (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
@@ -44,14 +46,6 @@ file_env() {
 	export "$var"="$val"
 	unset "$fileVar"
 }
-
-# allow the container to be started with `--user`
-if [[ "$1" == rabbitmq* ]] && [ "$(id -u)" = '0' ]; then
-	if [ "$1" = 'rabbitmq-server' ]; then
-		chown -R rabbitmq /var/lib/rabbitmq
-	fi
-	exec gosu rabbitmq "$BASH_SOURCE" "$@"
-fi
 
 # backwards compatibility for old environment variables
 : "${RABBITMQ_SSL_CERTFILE:=${RABBITMQ_SSL_CERT_FILE:-}}"
@@ -108,6 +102,37 @@ declare -A configDefaults=(
 	[ssl_fail_if_no_peer_cert]='true'
 	[ssl_verify]='verify_peer'
 )
+
+# allow the container to be started with `--user`
+if [[ "$1" == rabbitmq* ]] && [ "$(id -u)" = '0' ]; then
+	# this needs to happen late enough that we have the SSL config
+	# https://github.com/docker-library/rabbitmq/issues/283
+	for conf in "${allConfigKeys[@]}"; do
+		var="RABBITMQ_${conf^^}"
+		val="${!var:-}"
+		[ -n "$val" ] || continue
+		case "$conf" in
+			*_ssl_*file | ssl_*file )
+				if [ -f "$val" ] && ! gosu rabbitmq test -r "$val"; then
+					newFile="/tmp/rabbitmq-ssl/$conf.pem"
+					echo >&2
+					echo >&2 "WARNING: '$val' ($var) is not readable by rabbitmq ($(id rabbitmq)); copying to '$newFile'"
+					echo >&2
+					cat "$val" > "$newFile"
+					chown rabbitmq "$newFile"
+					chmod 0400 "$newFile"
+					eval 'export '$var'="$newFile"'
+				fi
+				;;
+		esac
+	done
+
+	if [ "$1" = 'rabbitmq-server' ]; then
+		find /var/lib/rabbitmq \! -user rabbitmq -exec chown rabbitmq '{}' +
+	fi
+
+	exec gosu rabbitmq "$BASH_SOURCE" "$@"
+fi
 
 haveConfig=
 haveSslConfig=
@@ -320,7 +345,7 @@ if [ "$1" = 'rabbitmq-server' ] && [ "$shouldWriteConfig" ]; then
 						perc = perc / 100;
 					}
 					if (perc > 1.0 || perc < 0.0) {
-						printf "error: invalid percentage for vm_memory_high_watermark: %s (must be > 0%%, <= 100%%)\n", $0 > "/dev/stderr";
+						printf "error: invalid percentage for vm_memory_high_watermark: %s (must be >= 0%%, <= 100%%)\n", $0 > "/dev/stderr";
 						exit 1;
 					}
 					printf "vm_memory_high_watermark.relative %0.03f\n", perc;
@@ -381,7 +406,7 @@ if [ "$1" = 'rabbitmq-server' ] && [ "$shouldWriteConfig" ]; then
 	fi
 fi
 
-combinedSsl='/tmp/combined.pem'
+combinedSsl='/tmp/rabbitmq-ssl/combined.pem'
 if [ "$haveSslConfig" ] && [[ "$1" == rabbitmq* ]] && [ ! -f "$combinedSsl" ]; then
 	# Create combined cert
 	{
@@ -407,5 +432,6 @@ if [[ ! -z "${RABBITMQ_ENABLED_PLUGINS}" ]]; then
   echo "${RABBITMQ_ENABLED_PLUGINS}" > /etc/rabbitmq/enabled_plugins
   more /etc/rabbitmq/enabled_plugins
 fi
+
 
 exec "$@"
