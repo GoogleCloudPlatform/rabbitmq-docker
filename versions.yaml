@@ -21,7 +21,7 @@
 cloudbuild:
   enable_parallel: true
 versions:
-- dir: 3/debian9/3.7
+- dir: 3/debian10/3.7
   from: gcr.io/google-appengine/debian10
   packages:
     otp:
@@ -32,9 +32,9 @@ versions:
       sha512: 365ba90b11209c75a27ce39303330ef45333496e756ec510c4dda90f8e1e3ce444d8c1948ea3181966b2871430675c650bd1a8474b7a1f5fa49e3c68cb8832cd
   repo: rabbitmq3
   tags:
-  - 3.7.25-debian9
-  - 3.7-debian9
-  - 3-debian9
+  - 3.7.25-debian10
+  - 3.7-debian10
+  - 3-debian10
   - 3.7.25
   - '3.7'
   - '3'
