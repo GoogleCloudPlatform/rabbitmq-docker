@@ -29,20 +29,14 @@ RUN set -eux; \
 
 FROM gcr.io/google-appengine/debian10
 
+# grab gosu for easy step-down from root
 RUN set -eux; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
-# grab gosu for easy step-down from root
-    gosu \
-# install openssl and libssl dev libs
-    openssl \
-    libssl-dev \
-  ; \
+    gosu; \
   rm -rf /var/lib/apt/lists/*; \
 # verify that the "gosu" binary works
-  gosu nobody true; \
-# verify openssl
-  openssl version
+  gosu nobody true
 
 ENV OTP_VERSION 22.3.2
 ENV OTP_SOURCE_SHA256="4a3719c71a7998e4f57e73920439b4b1606f7c045e437a0f0f9f1613594d3eaa"
@@ -62,9 +56,11 @@ RUN set -eux; \
     dirmngr \
     dpkg-dev \
     gcc \
+    libssl-dev \
     libncurses5-dev \
     m4 \
     make \
+    openssl \
     wget \
   ; \
   rm -rf /var/lib/apt/lists/*; \

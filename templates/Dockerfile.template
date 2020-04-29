@@ -32,20 +32,14 @@ RUN set -eux; \
 
 FROM {{ .From }}
 
+# grab gosu for easy step-down from root
 RUN set -eux; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
-# grab gosu for easy step-down from root
-    gosu \
-# install openssl and libssl dev libs
-    openssl \
-    libssl-dev \
-  ; \
+    gosu; \
   rm -rf /var/lib/apt/lists/*; \
 # verify that the "gosu" binary works
-  gosu nobody true; \
-# verify openssl
-  openssl version
+  gosu nobody true
 
 ENV OTP_VERSION {{ $otp.Version }}
 ENV OTP_SOURCE_SHA256="{{ $otp.Sha256 }}"
@@ -65,9 +59,11 @@ RUN set -eux; \
     dirmngr \
     dpkg-dev \
     gcc \
+    libssl-dev \
     libncurses5-dev \
     m4 \
     make \
+    openssl \
     wget \
   ; \
   rm -rf /var/lib/apt/lists/*; \
