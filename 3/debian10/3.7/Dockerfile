@@ -92,7 +92,7 @@ RUN set -eux; \
     --host="$hostArch" \
     --build="$buildArch" \
     --disable-dynamic-ssl-lib \
-    --enable-hipe \
+    --disable-hipe \
     --disable-sctp \
     --disable-silent-rules \
     --enable-clock-gettime \
