@@ -154,6 +154,8 @@ ENV RABBITMQ_VERSION {{ $rabbitmq.Version }}
 ENV RABBITMQ_SHA512="{{ $rabbitmq.Sha512 }}"
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
+ENV C2D_RELEASE {{ $rabbitmq.Version }}
+
 # Add RabbitMQ to PATH, send all logs to TTY
 ENV PATH=$RABBITMQ_HOME/sbin:$PATH \
   RABBITMQ_LOGS=-
