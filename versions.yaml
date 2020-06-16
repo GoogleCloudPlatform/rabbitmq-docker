@@ -22,20 +22,21 @@ cloudbuild:
   enable_parallel: true
 versions:
 - dir: 3/debian10/3.7
-  from: gcr.io/google-appengine/debian10
+  from: marketplace.gcr.io/google/debian10
   packages:
     otp:
-      version: '22.3.2'
-      sha256: '4a3719c71a7998e4f57e73920439b4b1606f7c045e437a0f0f9f1613594d3eaa'
+      sha256: 79657e07aee0cc174f89c1bd7d8d251295f64144cced6ea72b98777ec6a6660d
+      version: 22.3.4
     rabbitmq:
-      version: '3.7.25'
-      sha512: 365ba90b11209c75a27ce39303330ef45333496e756ec510c4dda90f8e1e3ce444d8c1948ea3181966b2871430675c650bd1a8474b7a1f5fa49e3c68cb8832cd
+      sha512: e445d12db5d9733bd3fed71c7f3b52057e62d10358556b63a5c7d6ea1872b36779c82db78ae6071fb6e2cb8c920de1f896df29739cd4b3193851cedca9c4cc13
+      version: 3.7.26
   repo: rabbitmq3
   tags:
-  - 3.7.25-debian10
+  - 3.7.26-debian10
   - 3.7-debian10
   - 3-debian10
-  - 3.7.25
+  - 3.7.26
   - '3.7'
   - '3'
   - latest
+
