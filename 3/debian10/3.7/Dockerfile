@@ -1,4 +1,4 @@
-FROM gcr.io/google-appengine/debian10 AS plugins
+FROM marketplace.gcr.io/google/debian10 AS plugins
 
 COPY license-checksums /
 
@@ -27,7 +27,7 @@ RUN set -eux; \
   sha256sum -c /license-checksums
 
 
-FROM gcr.io/google-appengine/debian10
+FROM marketplace.gcr.io/google/debian10
 
 # grab gosu for easy step-down from root
 RUN set -eux; \
@@ -38,8 +38,8 @@ RUN set -eux; \
 # verify that the "gosu" binary works
   gosu nobody true
 
-ENV OTP_VERSION 22.3.2
-ENV OTP_SOURCE_SHA256="4a3719c71a7998e4f57e73920439b4b1606f7c045e437a0f0f9f1613594d3eaa"
+ENV OTP_VERSION 22.3.4
+ENV OTP_SOURCE_SHA256="79657e07aee0cc174f89c1bd7d8d251295f64144cced6ea72b98777ec6a6660d"
 
 # Install dependencies required to build Erlang/OTP from source
 # http://erlang.org/doc/installation_guide/INSTALL.html
@@ -147,11 +147,11 @@ RUN set -eux; \
   ln -sf "$RABBITMQ_DATA_DIR/.erlang.cookie" /root/.erlang.cookie
 
 
-ENV RABBITMQ_VERSION 3.7.25
-ENV RABBITMQ_SHA512="365ba90b11209c75a27ce39303330ef45333496e756ec510c4dda90f8e1e3ce444d8c1948ea3181966b2871430675c650bd1a8474b7a1f5fa49e3c68cb8832cd"
+ENV RABBITMQ_VERSION 3.7.26
+ENV RABBITMQ_SHA512="e445d12db5d9733bd3fed71c7f3b52057e62d10358556b63a5c7d6ea1872b36779c82db78ae6071fb6e2cb8c920de1f896df29739cd4b3193851cedca9c4cc13"
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
-ENV C2D_RELEASE 3.7.25
+ENV C2D_RELEASE 3.7.26
 
 # Add RabbitMQ to PATH, send all logs to TTY
 ENV PATH=$RABBITMQ_HOME/sbin:$PATH \
