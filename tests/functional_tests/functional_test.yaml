@@ -55,6 +55,18 @@ tests:
   expect:
     exitCode:
       equals: 0
+# Stage 4
+- name: Check port connectivity
+  command: [rabbitmq-diagnostics, -q, check_port_connectivity]
+  expect:
+    exitCode:
+      equals: 0
+# Stage 5
+- name: Check virtual hosts statuses
+  command: [rabbitmq-diagnostics, -q, check_virtual_hosts]
+  expect:
+    exitCode:
+      equals: 0
 
 - name: Prometheus metrics check
   command: [curl, 'http://localhost:15692/metrics']
