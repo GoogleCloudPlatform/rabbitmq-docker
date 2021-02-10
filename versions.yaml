@@ -21,8 +21,30 @@
 cloudbuild:
   enable_parallel: true
 versions:
+- dir: 3/debian10/3.8
+  from: marketplace.gcr.io/google/debian10
+  templateSubDir: 3.8
+  packages:
+    otp:
+      sha256: 3160912856ba734bd9c17075e72f469b9d4b913f3ab9652ee7e0fb406f0f0f2c
+      version: 23.2.3
+    rabbitmq:
+      sha512: 02339a1a347848535cee08a5ddd03a7d68cd4861d007d34299ffaa31a22514da58907075eb82e081987eb956c395b91c03d48e315f75955e3fcbf5f87d313044
+      version: 3.8.11
+  repo: rabbitmq3
+  tags:
+  - 3.8.11-debian10
+  - 3.8-debian10
+  - 3-debian10
+  - '3.8.11'
+  - '3.8'
+  - '3'
+  - latest
+  excludeTests:
+  - tests/functional_tests/rabbitmq-3.7-test.yaml
 - dir: 3/debian10/3.7
   from: marketplace.gcr.io/google/debian10
+  templateSubDir: 3.7
   packages:
     otp:
       sha256: 79657e07aee0cc174f89c1bd7d8d251295f64144cced6ea72b98777ec6a6660d
@@ -34,9 +56,8 @@ versions:
   tags:
   - 3.7.28-debian10
   - 3.7-debian10
-  - 3-debian10
-  - 3.7.28
+  - '3.7.28'
   - '3.7'
-  - '3'
-  - latest
+  excludeTests:
+  - tests/functional_tests/functional_test.yaml
 
