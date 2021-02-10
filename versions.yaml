@@ -41,7 +41,7 @@ versions:
   - '3'
   - latest
   excludeTests:
-  - tests/functional_tests/rabbitmq-3.7-test.yaml
+  - tests/functional_tests/3_7_functional_test.yaml
 - dir: 3/debian10/3.7
   from: marketplace.gcr.io/google/debian10
   templateSubDir: 3.7
