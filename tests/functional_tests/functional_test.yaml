@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Google Inc.
+# Copyright (c) 2021 Google Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -20,8 +20,10 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 setup:
-- command: [docker, run, --privileged=true, -e, 'RABBITMQ_ENABLED_PLUGINS=[rabbitmq_management].', --name, some-rabbitmq-$UNIQUE-id, -d, '$IMAGE']
+- command: [docker, run, --privileged=true, --name, some-rabbitmq-$UNIQUE-id, -d, '$IMAGE']
 - command: [sleep, 20s]
+- command: [docker, exec, some-rabbitmq-$UNIQUE-id, apt, update]
+- command: [docker, exec, some-rabbitmq-$UNIQUE-id, apt, install, curl, -y]
 
 teardown:
 - command: [docker, stop, some-rabbitmq-$UNIQUE-id]
@@ -29,8 +31,45 @@ teardown:
 
 target: some-rabbitmq-$UNIQUE-id
 tests:
-- name: Health check
-  command: [rabbitmqctl, node_health_check]
+# https://www.rabbitmq.com/monitoring.html#health-checks
+# Stage 1
+- name: Runtime status
+  command: [rabbitmq-diagnostics, -q, ping]
+  expect:
+    exitCode:
+      equals: 0
+# Stage 2
+- name: Application status
+  command: [rabbitmq-diagnostics, -q, status]
+  expect:
+    exitCode:
+      equals: 0
+# Stage 3
+- name: Check running
+  command: [rabbitmq-diagnostics, -q, check_running]
+  expect:
+    exitCode:
+      equals: 0
+- name: Check local alarms
+  command: [rabbitmq-diagnostics, -q, check_local_alarms]
+  expect:
+    exitCode:
+      equals: 0
+# Stage 4
+- name: Check port connectivity
+  command: [rabbitmq-diagnostics, -q, check_port_connectivity]
+  expect:
+    exitCode:
+      equals: 0
+# Stage 5
+- name: Check virtual hosts statuses
+  command: [rabbitmq-diagnostics, -q, check_virtual_hosts]
+  expect:
+    exitCode:
+      equals: 0
+
+- name: Prometheus metrics check
+  command: [curl, 'http://localhost:15692/metrics']
   expect:
     stdout:
-      matches: Health check passed
+      matches: TYPE rabbitmq_consumers gauge
