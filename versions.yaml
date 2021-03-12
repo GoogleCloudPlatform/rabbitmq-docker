@@ -29,14 +29,14 @@ versions:
       sha256: 3160912856ba734bd9c17075e72f469b9d4b913f3ab9652ee7e0fb406f0f0f2c
       version: 23.2.3
     rabbitmq:
-      sha512: 02339a1a347848535cee08a5ddd03a7d68cd4861d007d34299ffaa31a22514da58907075eb82e081987eb956c395b91c03d48e315f75955e3fcbf5f87d313044
-      version: 3.8.11
+      sha512: 2d2f1fd7178d43cfd6583a02a506e40f4cb7387203be684aaf15f428f5a0463f1fb89cb581ecb7b5e94b20296b9f222d048439f23b39c0998ea693184aa0fa58
+      version: 3.8.14
   repo: rabbitmq3
   tags:
-  - 3.8.11-debian10
+  - 3.8.14-debian10
   - 3.8-debian10
   - 3-debian10
-  - '3.8.11'
+  - '3.8.14'
   - '3.8'
   - '3'
   - latest
