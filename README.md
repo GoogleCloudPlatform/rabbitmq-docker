@@ -14,7 +14,7 @@ https://github.com/docker-library/docs/tree/master/rabbitmq
 This is not an official Google product.
 # <a name="about"></a>About
 
-This image contains an installation of RabbitMQ 3.x.
+This image contains an installation of RabbitMQ
 
 For more information, see the [Official Image marketplace Page](https://console.cloud.google.com/marketplace/details/google/rabbitmq3).
 
