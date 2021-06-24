@@ -30,6 +30,7 @@ versions:
       version: 24.0
     rabbitmq:
       sha512: d354dba870de873b6f1cc4e849717d8b59ea9ea712e484d3e42547a729f8d4c7926232e93b9b451c71c2dfb9e6d5d06e8a53b59987ad7c93f96a082274f84e85
+      version: 3.8.17
   repo: rabbitmq3
   tags:
   - 3.8.17-debian10
