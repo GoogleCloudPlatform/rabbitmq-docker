@@ -26,8 +26,8 @@ versions:
   templateSubDir: default
   packages:
     otp:
-      sha256: 092826c21eee21068ff71cad4bc0713997cf59ec45e10e2f30d07d592865e010
-      version: 23.3.4.4
+      sha256: adc937319227774d53f941f25fa31990f5f89a530f6cb5511d5ea609f9f18ebe
+      version: 23.3.4
     rabbitmq:
       sha512: d354dba870de873b6f1cc4e849717d8b59ea9ea712e484d3e42547a729f8d4c7926232e93b9b451c71c2dfb9e6d5d06e8a53b59987ad7c93f96a082274f84e85
       version: 3.8.17
