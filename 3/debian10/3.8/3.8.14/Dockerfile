@@ -56,6 +56,8 @@ RUN set -eux; \
     dirmngr \
     dpkg-dev \
     gcc \
+    g++ \
+    gnupg \
     libssl-dev \
     libncurses5-dev \
     m4 \
@@ -167,6 +169,7 @@ RUN set -eux; \
     dirmngr \
     gnupg2 \
     wget \
+    
     xz-utils \
   ; \
   rm -rf /var/lib/apt/lists/*; \
