@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2020 Google Inc.
+# Copyright (c) 2021 Google Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,8 +22,6 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 set -eu
-
-export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu
 
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
@@ -226,6 +224,16 @@ oldConfigFile="$configBase.config"
 newConfigFile="$configBase.conf"
 
 shouldWriteConfig="$haveConfig"
+if [ -n "$shouldWriteConfig" ] && ! touch "$newConfigFile"; then
+	# config file exists but it isn't writeable (likely read-only mount, such as Kubernetes configMap)
+	export RABBITMQ_CONFIG_FILE='/tmp/rabbitmq.conf'
+	cp "$newConfigFile" "$RABBITMQ_CONFIG_FILE"
+	echo >&2
+	echo >&2 "WARNING: '$newConfigFile' is not writable, but environment variables have been provided which request that we write to it"
+	echo >&2 "  We have copied it to '$RABBITMQ_CONFIG_FILE' so it can be amended to work around the problem, but it is recommended that the read-only source file should be modified and the environment variables removed instead."
+	echo >&2
+	newConfigFile="$RABBITMQ_CONFIG_FILE"
+fi
 if [ -n "$shouldWriteConfig" ] && [ -f "$oldConfigFile" ]; then
 	{
 		echo "error: Docker configuration environment variables specified, but old-style (Erlang syntax) configuration file '$oldConfigFile' exists"
@@ -260,6 +268,7 @@ rabbit_set_config() {
 		"s/^[[:space:]]*(${sedKey}[[:space:]]*=[[:space:]]*)\S.*\$/\1${sedVal}/" \
 		"$newConfigFile"
 	if ! grep -qE "^${sedKey}[[:space:]]*=" "$newConfigFile"; then
+		sed -i -e '$a\' "$newConfigFile" # https://github.com/docker-library/rabbitmq/issues/456#issuecomment-752251872 (https://unix.stackexchange.com/a/31955/153467)
 		echo "$key = $val" >> "$newConfigFile"
 	fi
 }
@@ -400,8 +409,10 @@ if [ "$1" = 'rabbitmq-server' ] && [ "$shouldWriteConfig" ]; then
 		# https://www.rabbitmq.com/management.html#load-definitions
 		managementDefinitionsFile='/etc/rabbitmq/definitions.json'
 		if [ -f "$managementDefinitionsFile" ]; then
-			# see also https://github.com/docker-library/rabbitmq/pull/112#issuecomment-271485550
-			rabbit_set_config 'management.load_definitions' "$managementDefinitionsFile"
+			# We use `load_definitions` (the built-in setting as of 3.8.2+) instead
+			# of `management.load_definitions`.
+			# See https://github.com/docker-library/rabbitmq/issues/429 for details.
+			rabbit_set_config 'load_definitions' "$managementDefinitionsFile"
 		fi
 	fi
 fi
@@ -425,13 +436,5 @@ if [ "$haveSslConfig" ] && [ -f "$combinedSsl" ]; then
 	export RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS="${RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS:-} $sslErlArgs"
 	export RABBITMQ_CTL_ERL_ARGS="${RABBITMQ_CTL_ERL_ARGS:-} $sslErlArgs"
 fi
-
-: ${RABBITMQ_ENABLED_PLUGINS=''}
-
-if [[ ! -z "${RABBITMQ_ENABLED_PLUGINS}" ]]; then
-  echo "${RABBITMQ_ENABLED_PLUGINS}" > /etc/rabbitmq/enabled_plugins
-  more /etc/rabbitmq/enabled_plugins
-fi
-
 
 exec "$@"
