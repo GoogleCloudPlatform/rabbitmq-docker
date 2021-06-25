@@ -27,6 +27,8 @@ RUN set -eux; \
     dirmngr \
     dpkg-dev \
     gcc \
+    g++ \
+    gnupg \
     libssl-dev \
     libncurses5-dev \
     m4 \
@@ -72,6 +74,7 @@ RUN set -eux; \
     --enable-shared-zlib \
     --enable-smp-support \
     --enable-threads \
+    --enable-jit \
     --with-microstate-accounting=extra \
     --with-ssl="/usr/include/openssl" \
     --without-common_test \
@@ -184,9 +187,9 @@ RUN	gosu rabbitmq rabbitmqctl help; \
 
 # Enable Prometheus-style metrics by default (https://github.com/docker-library/rabbitmq/issues/419)
 RUN set -eux; \
-	rabbitmq-plugins enable --offline rabbitmq_prometheus; \
-	echo 'management_agent.disable_metrics_collector = true' > /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
-
+	gosu rabbitmq rabbitmq-plugins enable --offline rabbitmq_prometheus; \
+	echo 'management_agent.disable_metrics_collector = true' > /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf \
+        chown rabbitmq:rabbitmq /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
 # Added for backwards compatibility - users can simply COPY custom plugins to /plugins
 RUN ln -sf /opt/rabbitmq/plugins /plugins
 
