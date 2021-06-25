@@ -201,7 +201,7 @@ for conf in "${!configDefaults[@]}"; do
 done
 
 # if long and short hostnames are not the same, use long hostnames
-if [ "$(hostname)" != "$(hostname -s)" ]; then
+if [  -z "${RABBITMQ_USE_LONGNAME:-}" ] && "$(hostname)" != "$(hostname -s)" ]; then
 	: "${RABBITMQ_USE_LONGNAME:=true}"
 fi
 
@@ -387,10 +387,10 @@ if [ "$1" = 'rabbitmq-server' ] && [ "$shouldWriteConfig" ]; then
 	fi
 
 	if [ "$haveSslConfig" ]; then
-		rabbit_set_config 'listeners.ssl.default' 5671
+		rabbit_set_config 'listeners.ssl.default' "${RABBITMQ_NODE_PORT:-5671}"
 		rabbit_env_config 'ssl' "${sslConfigKeys[@]}"
 	else
-		rabbit_set_config 'listeners.tcp.default' 5672
+		rabbit_set_config 'listeners.tcp.default' "${RABBITMQ_NODE_PORT:-5672}"
 	fi
 
 	rabbit_env_config '' "${rabbitConfigKeys[@]}"
