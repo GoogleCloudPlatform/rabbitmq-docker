@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian9
+FROM marketplace.gcr.io/google/debian10
 
 # grab gosu for easy step-down from root
 RUN set -eux; \

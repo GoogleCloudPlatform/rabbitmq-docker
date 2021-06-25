@@ -40,7 +40,7 @@ versions:
   - tests/functional_tests/3_7_functional_test.yaml
   
 - dir: 3/debian10/3.8/3.8.18
-  from: marketplace.gcr.io/google/debian9
+  from: marketplace.gcr.io/google/debian10
   templateSubDir: default
   packages:
     otp:
