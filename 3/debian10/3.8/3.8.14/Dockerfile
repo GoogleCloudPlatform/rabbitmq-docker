@@ -219,6 +219,7 @@ RUN	gosu rabbitmq rabbitmqctl help; \
   rm "$RABBITMQ_DATA_DIR/.erlang.cookie"
   
 # Enable Prometheus-style metrics by default (https://github.com/docker-library/rabbitmq/issues/419)
+RUN mkdir /etc/rabbitmq/conf.d/
 RUN set -eux; \
 	gosu rabbitmq rabbitmq-plugins enable --offline rabbitmq_prometheus; \
 	echo 'management_agent.disable_metrics_collector = true' > /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf; \
