@@ -105,7 +105,6 @@ RUN set -eux; \
     --enable-smp-support \
     --enable-threads \
     --with-microstate-accounting=extra \
-    --with-ssl="/usr/include/openssl" \
     --without-common_test \
     --without-debugger \
     --without-dialyzer \
