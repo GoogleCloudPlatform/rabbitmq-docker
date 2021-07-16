@@ -31,3 +31,11 @@ versions:
       sha512: a38841b61424fe77bbc10d4956c84256b4064c152fbf3ef6d02f4c5b6952315c8dd194bca5cfd3298f8274a04544c93442829b0c460fca388bb68cfafff3a0f9
       version: 3.8.18
   repo: rabbitmq3
+  tags:
+  - 3.8.17-debian10
+  - 3.8-debian10
+  - 3-debian10
+  - '3.8.17'
+  - '3.8'
+  - '3'
+  - latest
