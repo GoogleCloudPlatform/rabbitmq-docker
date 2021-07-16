@@ -1,4 +1,7 @@
-FROM marketplace.gcr.io/google/debian10 AS plugins
+{{- $otp := index .Packages "otp" -}}
+{{- $rabbitmq := index .Packages "rabbitmq" -}}
+
+FROM {{ .From }} AS plugins
 
 COPY license-checksums /
 
@@ -27,7 +30,7 @@ RUN set -eux; \
   sha256sum -c /license-checksums
 
 
-FROM marketplace.gcr.io/google/debian10
+FROM {{ .From }}
 
 # grab gosu for easy step-down from root
 RUN set -eux; \
@@ -38,8 +41,8 @@ RUN set -eux; \
 # verify that the "gosu" binary works
   gosu nobody true
 
-ENV OTP_VERSION 22.3.4
-ENV OTP_SOURCE_SHA256="79657e07aee0cc174f89c1bd7d8d251295f64144cced6ea72b98777ec6a6660d"
+ENV OTP_VERSION {{ $otp.Version }}
+ENV OTP_SOURCE_SHA256="{{ $otp.Sha256 }}"
 
 # Install dependencies required to build Erlang/OTP from source
 # http://erlang.org/doc/installation_guide/INSTALL.html
@@ -56,6 +59,8 @@ RUN set -eux; \
     dirmngr \
     dpkg-dev \
     gcc \
+    g++ \
+    gnupg \
     libssl-dev \
     libncurses5-dev \
     m4 \
@@ -95,6 +100,7 @@ RUN set -eux; \
     --disable-hipe \
     --disable-sctp \
     --disable-silent-rules \
+    --enable-jit \
     --enable-clock-gettime \
     --enable-hybrid-heap \
     --enable-kernel-poll \
@@ -102,14 +108,12 @@ RUN set -eux; \
     --enable-smp-support \
     --enable-threads \
     --with-microstate-accounting=extra \
-    --with-ssl="/usr/include/openssl" \
     --without-common_test \
     --without-debugger \
     --without-dialyzer \
     --without-diameter \
     --without-edoc \
     --without-erl_docgen \
-    --without-erl_interface \
     --without-et \
     --without-eunit \
     --without-ftp \
@@ -141,17 +145,17 @@ ENV RABBITMQ_DATA_DIR=/var/lib/rabbitmq
 RUN set -eux; \
   groupadd --gid 999 --system rabbitmq; \
   useradd --uid 999 --system --home-dir "$RABBITMQ_DATA_DIR" --gid rabbitmq rabbitmq; \
-  mkdir -p "$RABBITMQ_DATA_DIR" /etc/rabbitmq /tmp/rabbitmq-ssl /var/log/rabbitmq; \
-  chown -fR rabbitmq:rabbitmq "$RABBITMQ_DATA_DIR" /etc/rabbitmq /tmp/rabbitmq-ssl /var/log/rabbitmq; \
-  chmod 777 "$RABBITMQ_DATA_DIR" /etc/rabbitmq /tmp/rabbitmq-ssl /var/log/rabbitmq; \
+  mkdir -p "$RABBITMQ_DATA_DIR" /etc/rabbitmq /tmp/rabbitmq-ssl /var/log/rabbitmq /etc/rabbitmq/conf.d; \
+  chown -fR rabbitmq:rabbitmq "$RABBITMQ_DATA_DIR" /etc/rabbitmq /tmp/rabbitmq-ssl /var/log/rabbitmq /etc/rabbitmq/conf.d; \
+  chmod 777 "$RABBITMQ_DATA_DIR" /etc/rabbitmq /tmp/rabbitmq-ssl /var/log/rabbitmq /etc/rabbitmq/conf.d; \
   ln -sf "$RABBITMQ_DATA_DIR/.erlang.cookie" /root/.erlang.cookie
 
 
-ENV RABBITMQ_VERSION 3.7.28
-ENV RABBITMQ_SHA512="75e766bb356f5ed75f948cfd9cdd9ad1e68ac6a8ded8571687e2f234396bf52c53bf985d8d688f734ddf88155915036c63399acf0ec773388bdb9e94a4fac8e7"
+ENV RABBITMQ_VERSION {{ $rabbitmq.Version }}
+ENV RABBITMQ_SHA512="{{ $rabbitmq.Sha512 }}"
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
-ENV C2D_RELEASE 3.7.28
+ENV C2D_RELEASE {{ $rabbitmq.Version }}
 
 # Add RabbitMQ to PATH, send all logs to TTY
 ENV PATH=$RABBITMQ_HOME/sbin:$PATH \
@@ -167,6 +171,7 @@ RUN set -eux; \
     dirmngr \
     gnupg2 \
     wget \
+    
     xz-utils \
   ; \
   rm -rf /var/lib/apt/lists/*; \
@@ -215,7 +220,13 @@ RUN	gosu rabbitmq rabbitmqctl help; \
   gosu rabbitmq rabbitmq-plugins list; \
 # no stale cookies
   rm "$RABBITMQ_DATA_DIR/.erlang.cookie"
-
+  
+# Enable Prometheus-style metrics by default (https://github.com/docker-library/rabbitmq/issues/419)
+RUN set -eux; \
+	gosu rabbitmq rabbitmq-plugins enable --offline rabbitmq_prometheus; \
+	echo 'management_agent.disable_metrics_collector = true' > /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf; \
+	chown rabbitmq:rabbitmq /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
+	
 # Added for backwards compatibility - users can simply COPY custom plugins to /plugins
 RUN ln -sf /opt/rabbitmq/plugins /plugins
 
