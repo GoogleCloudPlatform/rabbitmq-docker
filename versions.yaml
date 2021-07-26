@@ -28,14 +28,14 @@ versions:
       sha256: 4abca2cda7fc962ad65575e5ed834dd69c745e7e637f92cfd49f384a281d0f18
       version: 24.0.2
     rabbitmq:
-      sha512: a38841b61424fe77bbc10d4956c84256b4064c152fbf3ef6d02f4c5b6952315c8dd194bca5cfd3298f8274a04544c93442829b0c460fca388bb68cfafff3a0f9
-      version: 3.8.18
+      sha512: b8fe06ff15e723c15de4165af1c82b39d20d68806667589cc2947cb76f524e02684603e462783631e597c6c071ee004f32e2bcd100037e6385cfc0037990f637
+      version: 3.8.19
   repo: rabbitmq3
   tags:
-  - 3.8.17-debian10
+  - 3.8.19-debian10
   - 3.8-debian10
   - 3-debian10
-  - '3.8.17'
+  - '3.8.19'
   - '3.8'
   - '3'
   - latest
