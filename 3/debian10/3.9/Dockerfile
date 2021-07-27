@@ -39,7 +39,7 @@ RUN set -eux; \
   gosu nobody true
 
 ENV OTP_VERSION 24.0.4
-ENV OTP_SOURCE_SHA256="34d1f17425ed75add154261a9df2caeddb408b269b43275e5231c44f4fe5658b"
+ENV OTP_SOURCE_SHA256="5af12fb9c8fd7f29b2b4136ed9a451a7218132430641ca4ebf1495f85a732b9b"
 
 # Install dependencies required to build Erlang/OTP from source
 # http://erlang.org/doc/installation_guide/INSTALL.html
