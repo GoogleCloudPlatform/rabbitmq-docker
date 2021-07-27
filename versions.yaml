@@ -34,8 +34,23 @@ versions:
   tags:
   - 3.8.19-debian10
   - 3.8-debian10
-  - 3-debian10
   - '3.8.19'
   - '3.8'
+- dir: 3/debian10/3.9
+  from: marketplace.gcr.io/google/debian10
+  packages:
+    otp:
+      sha256: 34d1f17425ed75add154261a9df2caeddb408b269b43275e5231c44f4fe5658b
+      version: 24.0.4
+    rabbitmq:
+      sha512: 4648b0f6dbbad98c6ba806336044a5b382190d5f4a118bd76515c61983861d0ef9c7b959a331bdde76868ce7e31e14ebc290af2f34c65e6c4e685c6e45b738f3
+      version: 3.9.0
+  repo: rabbitmq3
+  tags:
+  - 3.9.0-debian10
+  - 3.9-debian10
+  - 3-debian10
+  - '3.9.0'
+  - '3.9'
   - '3'
   - latest
