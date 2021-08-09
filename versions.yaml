@@ -40,7 +40,7 @@ versions:
   from: marketplace.gcr.io/google/debian10
   packages:
     otp:
-      sha256: a5fec674b11d0a2b888963157a9de60fc384be27ff1a2175cd20708a5b9aa97d
+      sha256: dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624
       version: 24.0.5
     rabbitmq:
       sha512: 8f47ced67fdaa44cdeef9099ed951b7e6e6cb8087be99e78e5a2d0a93c4d0d0c918c4e24a7876f88c3209bfa0f48bb289342f8ae630583760bbea2743470a34a
