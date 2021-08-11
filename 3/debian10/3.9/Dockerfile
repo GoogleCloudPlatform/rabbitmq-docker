@@ -38,8 +38,8 @@ RUN set -eux; \
 # verify that the "gosu" binary works
   gosu nobody true
 
-ENV OTP_VERSION 24.0.4
-ENV OTP_SOURCE_SHA256="5af12fb9c8fd7f29b2b4136ed9a451a7218132430641ca4ebf1495f85a732b9b"
+ENV OTP_VERSION 24.0.5
+ENV OTP_SOURCE_SHA256="dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624"
 
 # Install dependencies required to build Erlang/OTP from source
 # http://erlang.org/doc/installation_guide/INSTALL.html
@@ -148,11 +148,11 @@ RUN set -eux; \
   ln -sf "$RABBITMQ_DATA_DIR/.erlang.cookie" /root/.erlang.cookie
 
 
-ENV RABBITMQ_VERSION 3.9.0
-ENV RABBITMQ_SHA512="4648b0f6dbbad98c6ba806336044a5b382190d5f4a118bd76515c61983861d0ef9c7b959a331bdde76868ce7e31e14ebc290af2f34c65e6c4e685c6e45b738f3"
+ENV RABBITMQ_VERSION 3.9.1
+ENV RABBITMQ_SHA512="8f47ced67fdaa44cdeef9099ed951b7e6e6cb8087be99e78e5a2d0a93c4d0d0c918c4e24a7876f88c3209bfa0f48bb289342f8ae630583760bbea2743470a34a"
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
-ENV C2D_RELEASE 3.9.0
+ENV C2D_RELEASE 3.9.1
 
 # Add RabbitMQ to PATH, send all logs to TTY
 ENV PATH=$RABBITMQ_HOME/sbin:$PATH \
