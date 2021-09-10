@@ -17,7 +17,7 @@ This is not an official Google product.
 
 This image contains an installation of RabbitMQ 3.x.
 
-For more information, see the [Official Image marketplace Page](https://console.cloud.google.com/marketplace/details/google/rabbitmq3).
+For more information, see the [Official Image Marketplace Page](https://console.cloud.google.com/marketplace/details/google/rabbitmq3).
 
 Pull command:
 
