@@ -28,30 +28,15 @@ versions:
       sha256: dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624
       version: 24.0.5
     rabbitmq:
-      sha512: 98c6c8e5357c16d2658af005444efde45041ada457bef2cfb7551f766152a29a73c2c2d8c1ac973a4673127915ded300e8bd38d2f2b1482c07c66c05b37f7728
-      version: 3.9.8
+      sha512: fa6014811b7194d3a3825d7bf563ecb6b11f848f184e1b70b2058df49017f785a6360660d0106e97b01e3d57dda17ad10f62a87badf5603880480b01d23f3632
+      version: 3.9.11
   repo: rabbitmq3
   tags:
-  - 3.9.8-debian10
+  - 3.9.11-debian10
   - 3.9-debian10
   - 3-debian10
-  - 3.9.8
+  - 3.9.11
   - '3.9'
   - '3'
   - latest
-- dir: 3/debian10/3.8
-  from: marketplace.gcr.io/google/debian10
-  packages:
-    otp:
-      sha256: dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624
-      version: 24.0.5
-    rabbitmq:
-      sha512: d9c297bb6d8a344051374b7bd55e6281872a7a66e4a91579f23b64d92567ec3b6a82968ebdc9fb6c26a4b2f01fa3e8a5b46749706b91616016f47fb3e513940e
-      version: 3.8.23
-  repo: rabbitmq3
-  tags:
-  - 3.8.23-debian10
-  - 3.8-debian10
-  - 3.8.23
-  - '3.8'
 
