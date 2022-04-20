@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -28,30 +28,15 @@ versions:
       sha256: dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624
       version: 24.0.5
     rabbitmq:
-      sha512: a720616430da8ff47cf4f2a17d0e3f9a61b7c117ee3b11266d6756290a24ac09d38039578f29c1442c14b42f791beba872622597259c5039f348a7c8e58352ad
-      version: 3.9.7
+      sha512: 9dca0ec6bdaa6e1d302ebf80ebf261028ab0452431dfa5a63e66097badf89062d3467936b88bc34e4088e2a6238a7bcfdbff3364cd6f5d861a7a0c64f4d6e558
+      version: 3.9.14
   repo: rabbitmq3
   tags:
-  - 3.9.7-debian10
+  - 3.9.14-debian10
   - 3.9-debian10
   - 3-debian10
-  - 3.9.7
+  - 3.9.14
   - '3.9'
   - '3'
   - latest
-- dir: 3/debian10/3.8
-  from: marketplace.gcr.io/google/debian10
-  packages:
-    otp:
-      sha256: dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624
-      version: 24.0.5
-    rabbitmq:
-      sha512: d9c297bb6d8a344051374b7bd55e6281872a7a66e4a91579f23b64d92567ec3b6a82968ebdc9fb6c26a4b2f01fa3e8a5b46749706b91616016f47fb3e513940e
-      version: 3.8.23
-  repo: rabbitmq3
-  tags:
-  - 3.8.23-debian10
-  - 3.8-debian10
-  - 3.8.23
-  - '3.8'
 
