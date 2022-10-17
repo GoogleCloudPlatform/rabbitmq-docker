@@ -21,37 +21,37 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian11/3.10
-  from: marketplace.gcr.io/google/debian11
+- dir: 3/debian10/3.11
+  from: marketplace.gcr.io/google/debian10
   packages:
     otp:
       sha256: dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624
       version: 24.0.5
     rabbitmq:
-      sha512: effc6fdad31e30037344243918501b8dcb03c01baa98b3ac8d6b09d6dec00a9e56e82c69f1347ae084ef623f56fab60e8cc4b1b693cebaf21325d504864f920c
-      version: 3.10.7
+      sha512: 38d702c7d909812c24401e0455dc816e267ea3e95e6261e421cbe9f0b336ed8628115fe455ce0351e11ea83abc9b6430b72ad70c5cc3a025963433bcf1041f64
+      version: 3.11.1
   repo: rabbitmq3
   tags:
-  - 3.10.7-debian11
-  - 3.10-debian11
-  - 3-debian11
-  - 3.10.7
-  - '3.10'
+  - 3.11.1-debian10
+  - 3.11-debian10
+  - 3-debian10
+  - 3.11.1
+  - '3.11'
   - '3'
   - latest
-- dir: 3/debian11/3.9
-  from: marketplace.gcr.io/google/debian11
+- dir: 3/debian10/3.9
+  from: marketplace.gcr.io/google/debian10
   packages:
     otp:
       sha256: dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624
       version: 24.0.5
     rabbitmq:
-      sha512: d240119e7cf5bf44d1487f6f0d46388104c3cdea3a35b0ac0c750e91ee9e289d45df5ac7a1852a6be7bff14a734ea698464324ba7ea8f8971fbb302ed7377e64
-      version: 3.9.22
+      sha512: ef7282b11fb360af9e38798f5a4b711adb3a9ccbe5736e577e944495842914093b9790e6f3c0494b416d650cae34c5cf6f0071d924089b09a93ba37ee2674f51
+      version: 3.9.23
   repo: rabbitmq3
   tags:
-  - 3.9.22-debian11
-  - 3.9-debian11
-  - 3.9.22
+  - 3.9.23-debian10
+  - 3.9-debian10
+  - 3.9.23
   - '3.9'
 
