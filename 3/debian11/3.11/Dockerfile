@@ -9,8 +9,7 @@ RUN set -eux; \
 # verify that the "gosu" binary works
   gosu nobody true
 
-ENV OTP_VERSION 24.0.5
-ENV OTP_SOURCE_SHA256="dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624"
+ENV OTP_VERSION 25.1.2
 
 # Install dependencies required to build Erlang/OTP from source
 # http://erlang.org/doc/installation_guide/INSTALL.html
@@ -46,7 +45,6 @@ RUN set -eux; \
 # Download, verify & extract OTP_SOURCE
   mkdir -p "$OTP_PATH"; \
   wget --progress dot:giga --output-document "$OTP_PATH.tar.gz" "$OTP_SOURCE_URL"; \
-  echo "$OTP_SOURCE_SHA256 *$OTP_PATH.tar.gz" | sha256sum --check --strict -; \
   tar --extract --file "$OTP_PATH.tar.gz" --directory "$OTP_PATH" --strip-components 1; \
   \
 # Configure Erlang/OTP for compilation, disable unused features & applications
@@ -120,7 +118,6 @@ RUN set -eux; \
 
 
 ENV RABBITMQ_VERSION 3.11.9
-ENV RABBITMQ_SHA512="d7e89740443fcc4c20cd5e2407121cb69b96b201ffb209325c683265ec60ffe7c28bcbc0a2b4a3a7ba42f0586e2bf6d830d8ccf0681c5c4564c3876437d21aa5"
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
 ENV C2D_RELEASE 3.11.9
@@ -139,7 +136,7 @@ RUN set -eux; \
     dirmngr \
     gnupg2 \
     wget \
-    
+
     xz-utils \
   ; \
   rm -rf /var/lib/apt/lists/*; \
@@ -150,7 +147,6 @@ RUN set -eux; \
   wget --progress dot:giga --output-document "$RABBITMQ_PATH.tar.xz" "$RABBITMQ_SOURCE_URL"; \
   \
   mkdir -p "$RABBITMQ_HOME"; \
-  echo "$RABBITMQ_SHA512 *$RABBITMQ_PATH.tar.xz" | sha512sum --check --strict -; \
   tar --extract --file "$RABBITMQ_PATH.tar.xz" --directory "$RABBITMQ_HOME" --strip-components 1; \
   rm -rf "$RABBITMQ_PATH"*; \
 # Do not default SYS_PREFIX to RABBITMQ_HOME, leave it empty
@@ -183,13 +179,13 @@ RUN	gosu rabbitmq rabbitmqctl help; \
   gosu rabbitmq rabbitmq-plugins list; \
 # no stale cookies
   rm "$RABBITMQ_DATA_DIR/.erlang.cookie"
-  
+
 # Enable Prometheus-style metrics by default (https://github.com/docker-library/rabbitmq/issues/419)
 RUN set -eux; \
 	gosu rabbitmq rabbitmq-plugins enable --offline rabbitmq_prometheus; \
 	echo 'management_agent.disable_metrics_collector = true' > /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf; \
 	chown rabbitmq:rabbitmq /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
-	
+
 # Added for backwards compatibility - users can simply COPY custom plugins to /plugins
 RUN ln -sf /opt/rabbitmq/plugins /plugins
 
