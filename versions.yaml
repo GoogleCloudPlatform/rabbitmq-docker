@@ -41,7 +41,7 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     otp:
-      version: 24.0.5
+      version: 25.1.2
     rabbitmq:
       version: 3.9.28
   repo: rabbitmq3
