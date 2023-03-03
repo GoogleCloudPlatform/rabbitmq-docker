@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 # grab gosu for easy step-down from root
 RUN set -eux; \
@@ -119,11 +119,11 @@ RUN set -eux; \
   ln -sf "$RABBITMQ_DATA_DIR/.erlang.cookie" /root/.erlang.cookie
 
 
-ENV RABBITMQ_VERSION 3.10.7
-ENV RABBITMQ_SHA512="effc6fdad31e30037344243918501b8dcb03c01baa98b3ac8d6b09d6dec00a9e56e82c69f1347ae084ef623f56fab60e8cc4b1b693cebaf21325d504864f920c"
+ENV RABBITMQ_VERSION 3.11.9
+ENV RABBITMQ_SHA512="d7e89740443fcc4c20cd5e2407121cb69b96b201ffb209325c683265ec60ffe7c28bcbc0a2b4a3a7ba42f0586e2bf6d830d8ccf0681c5c4564c3876437d21aa5"
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
-ENV C2D_RELEASE 3.10.7
+ENV C2D_RELEASE 3.11.9
 
 # Add RabbitMQ to PATH, send all logs to TTY
 ENV PATH=$RABBITMQ_HOME/sbin:$PATH \
