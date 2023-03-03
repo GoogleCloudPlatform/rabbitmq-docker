@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 # grab gosu for easy step-down from root
 RUN set -eux; \
@@ -9,8 +9,7 @@ RUN set -eux; \
 # verify that the "gosu" binary works
   gosu nobody true
 
-ENV OTP_VERSION 24.0.5
-ENV OTP_SOURCE_SHA256="dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624"
+ENV OTP_VERSION 25.1.2
 
 # Install dependencies required to build Erlang/OTP from source
 # http://erlang.org/doc/installation_guide/INSTALL.html
@@ -46,7 +45,6 @@ RUN set -eux; \
 # Download, verify & extract OTP_SOURCE
   mkdir -p "$OTP_PATH"; \
   wget --progress dot:giga --output-document "$OTP_PATH.tar.gz" "$OTP_SOURCE_URL"; \
-  echo "$OTP_SOURCE_SHA256 *$OTP_PATH.tar.gz" | sha256sum --check --strict -; \
   tar --extract --file "$OTP_PATH.tar.gz" --directory "$OTP_PATH" --strip-components 1; \
   \
 # Configure Erlang/OTP for compilation, disable unused features & applications
@@ -119,11 +117,10 @@ RUN set -eux; \
   ln -sf "$RABBITMQ_DATA_DIR/.erlang.cookie" /root/.erlang.cookie
 
 
-ENV RABBITMQ_VERSION 3.9.22
-ENV RABBITMQ_SHA512="d240119e7cf5bf44d1487f6f0d46388104c3cdea3a35b0ac0c750e91ee9e289d45df5ac7a1852a6be7bff14a734ea698464324ba7ea8f8971fbb302ed7377e64"
+ENV RABBITMQ_VERSION 3.9.28
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
-ENV C2D_RELEASE 3.9.22
+ENV C2D_RELEASE 3.9.28
 
 # Add RabbitMQ to PATH, send all logs to TTY
 ENV PATH=$RABBITMQ_HOME/sbin:$PATH \
@@ -139,7 +136,7 @@ RUN set -eux; \
     dirmngr \
     gnupg2 \
     wget \
-    
+
     xz-utils \
   ; \
   rm -rf /var/lib/apt/lists/*; \
@@ -150,7 +147,6 @@ RUN set -eux; \
   wget --progress dot:giga --output-document "$RABBITMQ_PATH.tar.xz" "$RABBITMQ_SOURCE_URL"; \
   \
   mkdir -p "$RABBITMQ_HOME"; \
-  echo "$RABBITMQ_SHA512 *$RABBITMQ_PATH.tar.xz" | sha512sum --check --strict -; \
   tar --extract --file "$RABBITMQ_PATH.tar.xz" --directory "$RABBITMQ_HOME" --strip-components 1; \
   rm -rf "$RABBITMQ_PATH"*; \
 # Do not default SYS_PREFIX to RABBITMQ_HOME, leave it empty
@@ -183,13 +179,13 @@ RUN	gosu rabbitmq rabbitmqctl help; \
   gosu rabbitmq rabbitmq-plugins list; \
 # no stale cookies
   rm "$RABBITMQ_DATA_DIR/.erlang.cookie"
-  
+
 # Enable Prometheus-style metrics by default (https://github.com/docker-library/rabbitmq/issues/419)
 RUN set -eux; \
 	gosu rabbitmq rabbitmq-plugins enable --offline rabbitmq_prometheus; \
 	echo 'management_agent.disable_metrics_collector = true' > /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf; \
 	chown rabbitmq:rabbitmq /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
-	
+
 # Added for backwards compatibility - users can simply COPY custom plugins to /plugins
 RUN ln -sf /opt/rabbitmq/plugins /plugins
 

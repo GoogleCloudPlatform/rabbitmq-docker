@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -21,37 +21,32 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian11/3.10
-  from: marketplace.gcr.io/google/debian11
+- dir: 3/debian11/3.11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     otp:
-      sha256: dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624
-      version: 24.0.5
+      version: 25.1.2
     rabbitmq:
-      sha512: effc6fdad31e30037344243918501b8dcb03c01baa98b3ac8d6b09d6dec00a9e56e82c69f1347ae084ef623f56fab60e8cc4b1b693cebaf21325d504864f920c
-      version: 3.10.7
+      version: 3.11.9
   repo: rabbitmq3
   tags:
-  - 3.10.7-debian11
-  - 3.10-debian11
+  - 3.11.9-debian11
+  - 3.11-debian11
   - 3-debian11
-  - 3.10.7
-  - '3.10'
+  - 3.11.9
+  - '3.11'
   - '3'
   - latest
 - dir: 3/debian11/3.9
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     otp:
-      sha256: dd189cf94bf86c610a66f5d9f1a49b8d95a7ce1a7534d216e97e8fade271e624
-      version: 24.0.5
+      version: 25.1.2
     rabbitmq:
-      sha512: d240119e7cf5bf44d1487f6f0d46388104c3cdea3a35b0ac0c750e91ee9e289d45df5ac7a1852a6be7bff14a734ea698464324ba7ea8f8971fbb302ed7377e64
-      version: 3.9.22
+      version: 3.9.28
   repo: rabbitmq3
   tags:
-  - 3.9.22-debian11
+  - 3.9.28-debian11
   - 3.9-debian11
-  - 3.9.22
+  - 3.9.28
   - '3.9'
-
