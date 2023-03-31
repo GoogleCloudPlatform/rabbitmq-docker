@@ -37,16 +37,4 @@ versions:
   - '3.11'
   - '3'
   - latest
-- dir: 3/debian11/3.9
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    otp:
-      version: 25.1.2
-    rabbitmq:
-      version: 3.9.28
-  repo: rabbitmq3
-  tags:
-  - 3.9.28-debian11
-  - 3.9-debian11
-  - 3.9.28
-  - '3.9'
+
