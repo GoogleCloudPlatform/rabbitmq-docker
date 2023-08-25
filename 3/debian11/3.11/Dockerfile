@@ -1,13 +1,41 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
 # grab gosu for easy step-down from root
-RUN set -eux; \
-  apt-get update; \
-  apt-get install -y --no-install-recommends \
-    gosu; \
-  rm -rf /var/lib/apt/lists/*; \
-# verify that the "gosu" binary works
-  gosu nobody true
+ENV GOSU_VERSION 1.16
+RUN set -x \
+  && apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    dirmngr \
+    gpg \
+		gpg-agent \
+    wget \
+    openssl && rm -rf /var/lib/apt/lists/* \
+  && wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
+  && wget -q -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
+# copy source code
+  && wget -q -O /usr/local/src/gosu.tar.gz "https://github.com/tianon/gosu/archive/$GOSU_VERSION.tar.gz" \
+# extract gosu binary and check signature
+  && export GNUPGHOME="$(mktemp -d)" \
+  && found='' \
+  && for server in \
+    pool.sks-keyservers.net \
+    ha.pool.sks-keyservers.net \
+    pgp.mit.edu \
+    na.pool.sks-keyservers.net \
+    eu.pool.sks-keyservers.net \
+    oc.pool.sks-keyservers.net \
+    ha.pool.sks-keyservers.net \
+    hkp://p80.pool.sks-keyservers.net:80 \
+    hkp://keyserver.ubuntu.com:80 \
+  ; do \
+    gpg --no-tty --keyserver $server --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+      && found="yes" && break; \
+  done; test -n "$found" \
+  && gpg --no-tty --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
+  && rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
+  && chmod +x /usr/local/bin/gosu \
+  && gosu nobody true \
+  && apt-get purge -y --auto-remove wget
 
 ENV OTP_VERSION 25.1.2
 
