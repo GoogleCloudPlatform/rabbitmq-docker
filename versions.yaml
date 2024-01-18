@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -24,9 +24,6 @@ versions:
 - dir: 3/debian11/3.12
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
-    gosu:
-      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.16'
     otp:
       version: 25.1.2
     rabbitmq:
@@ -43,9 +40,6 @@ versions:
 - dir: 3/debian11/3.11
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
-    gosu:
-      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.16'
     otp:
       version: 25.1.2
     rabbitmq:
