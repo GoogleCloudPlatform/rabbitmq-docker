@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
 # grab gosu for easy step-down from root
-ENV GOSU_VERSION 1.16
+ENV GOSU_VERSION 1.17
 RUN set -x \
   && apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \

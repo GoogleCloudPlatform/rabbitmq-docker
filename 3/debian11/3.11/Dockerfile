@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
 # grab gosu for easy step-down from root
-ENV GOSU_VERSION 1.16
+ENV GOSU_VERSION 1.17
 RUN set -x \
   && apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
@@ -145,10 +145,10 @@ RUN set -eux; \
   ln -sf "$RABBITMQ_DATA_DIR/.erlang.cookie" /root/.erlang.cookie
 
 
-ENV RABBITMQ_VERSION 3.11.23
+ENV RABBITMQ_VERSION 3.11.28
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
-ENV C2D_RELEASE 3.11.23
+ENV C2D_RELEASE 3.11.28
 
 # Add RabbitMQ to PATH, send all logs to TTY
 ENV PATH=$RABBITMQ_HOME/sbin:$PATH \
