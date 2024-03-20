@@ -24,6 +24,9 @@ versions:
 - dir: 3/debian11/3.12
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
     otp:
       version: 25.1.2
     rabbitmq:
@@ -40,14 +43,17 @@ versions:
 - dir: 3/debian11/3.11
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
     otp:
       version: 25.1.2
     rabbitmq:
-      version: 3.11.23
+      version: 3.11.28
   repo: rabbitmq3
   tags:
-  - 3.11.23-debian11
+  - 3.11.28-debian11
   - 3.11-debian11
-  - 3.11.23
-  - '3.11'
+  - 3.11.28
+  - '3.11
 
