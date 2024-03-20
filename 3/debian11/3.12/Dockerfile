@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
 # grab gosu for easy step-down from root
-ENV GOSU_VERSION 
+ENV GOSU_VERSION 1.17
 RUN set -x \
   && apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
@@ -28,7 +28,7 @@ RUN set -x \
     hkp://p80.pool.sks-keyservers.net:80 \
     hkp://keyserver.ubuntu.com:80 \
   ; do \
-    gpg --no-tty --keyserver $server --recv-keys  \
+    gpg --no-tty --keyserver $server --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
       && found="yes" && break; \
   done; test -n "$found" \
   && gpg --no-tty --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
