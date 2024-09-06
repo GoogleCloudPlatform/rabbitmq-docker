@@ -1,7 +1,7 @@
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian12
 
 # grab gosu for easy step-down from root
-ENV GOSU_VERSION 1.16
+ENV GOSU_VERSION 1.17
 RUN set -x \
   && apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
@@ -37,7 +37,7 @@ RUN set -x \
   && gosu nobody true \
   && apt-get purge -y --auto-remove wget
 
-ENV OTP_VERSION 25.1.2
+ENV OTP_VERSION 26.2.5.3
 
 # Install dependencies required to build Erlang/OTP from source
 # http://erlang.org/doc/installation_guide/INSTALL.html
@@ -145,10 +145,10 @@ RUN set -eux; \
   ln -sf "$RABBITMQ_DATA_DIR/.erlang.cookie" /root/.erlang.cookie
 
 
-ENV RABBITMQ_VERSION 3.12.4
+ENV RABBITMQ_VERSION 3.13.7
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
-ENV C2D_RELEASE 3.12.4
+ENV C2D_RELEASE 3.13.7
 
 # Add RabbitMQ to PATH, send all logs to TTY
 ENV PATH=$RABBITMQ_HOME/sbin:$PATH \
