@@ -32,6 +32,9 @@ versions:
     rabbitmq:
       version: 3.13.7
   repo: rabbitmq3
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/96358145-e7c1-4dcb-aaee-e4a35745c11d.cloudpartnerservices.goog
   tags:
   - 3.13.7-debian12
   - 3.13-debian12
