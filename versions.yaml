@@ -21,23 +21,23 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian11/3.12
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 3/debian12/3.13
+  from: marketplace.gcr.io/google/debian12
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
     otp:
-      version: 25.1.2
+      version: 26.2.5.3
     rabbitmq:
-      version: 3.12.4
+      version: 3.13.7
   repo: rabbitmq3
   tags:
-  - 3.12.4-debian11
-  - 3.12-debian11
-  - 3-debian11
-  - 3.12.4
-  - '3.12'
+  - 3.13.7-debian12
+  - 3.13-debian12
+  - 3-debian12
+  - 3.13.7
+  - '3.13'
   - '3'
   - latest
 - dir: 3/debian11/3.11
